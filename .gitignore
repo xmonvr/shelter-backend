@@ -2,6 +2,7 @@
 *.class
 
 # Log file
+logs/
 *.log
 
 # BlueJ files
@@ -21,3 +22,25 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# Pliki tymczasowe i katalogi wygenerowane przez IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Pliki wyjściowe kompilacji, np. katalogi build lub target
+/build/
+/target/
+
+# Katalogi i pliki związane z Gradle
+.gradle/
+build.gradle
+gradle.properties
+gradlew
+gradlew.bat
+settings.gradle
+
+# Pliki związane z testami
+test-output/
+test-classes/
