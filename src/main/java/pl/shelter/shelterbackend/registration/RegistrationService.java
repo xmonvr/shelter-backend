@@ -30,7 +30,7 @@ public class RegistrationService {
         //token ktory wysylamy
         String token = appUserService.
                 signUpUser(new AppUser(request.getFirstName(), request.getLastName(), request.getEmail(),
-                        request.getPassword(), AppUserRole.USER));
+                        request.getPassword(), request.getConfirmPassword(), request.getBirthDate(), AppUserRole.USER));
 
         String link= "http://localhost:8081/api/registration/confirm?token=" + token;
 
