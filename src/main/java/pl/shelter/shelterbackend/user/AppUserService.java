@@ -3,7 +3,6 @@ package pl.shelter.shelterbackend.user;
 import pl.shelter.shelterbackend.registration.token.ConfirmationToken;
 import pl.shelter.shelterbackend.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,12 +21,12 @@ public class AppUserService implements UserDetailsService {
     private final ConfirmationTokenService confirmationTokenService;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public AppUser loadUserByUsername(String email) throws UsernameNotFoundException {
         return appUserRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, email)));
     }
 
-    public String signUpUser(AppUser appUser){
+    public String signUpUser(AppUser appUser) {
         //jesli uzytkownik istnieje
         boolean userExists =  appUserRepository.findByEmail(appUser.getEmail()).isPresent();
 
