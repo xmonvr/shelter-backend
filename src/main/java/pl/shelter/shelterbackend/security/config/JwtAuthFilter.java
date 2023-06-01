@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import pl.shelter.shelterbackend.security.token.TokenRepository;
 import pl.shelter.shelterbackend.user.AppUser;
 import pl.shelter.shelterbackend.user.AppUserService;
 
@@ -24,6 +25,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final AppUserService appUserService;
     private final JwtUtils jwtUtils;
+    private final TokenRepository tokenRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -41,7 +43,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             AppUser appUser = appUserService.loadUserByUsername(userEmail);
-            if (jwtUtils.isTokenValid(jwtToken, appUser)) {
+            boolean isTokenValid = tokenRepository.findByToken(jwtToken).map(token -> !token.isExpired() && !token.isRevoked()).orElse(false);
+            if (jwtUtils.isTokenValid(jwtToken, appUser) && isTokenValid) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(appUser, null, appUser.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);

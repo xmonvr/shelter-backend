@@ -47,6 +47,10 @@ public class JwtUtils {
         return createToken(claims, appUser);
     }
 
+    public String generateRefreshToken(AppUser appUser) {
+        return createToken(new HashMap<>(), appUser);
+    }
+
     private String createToken(Map<String, Object> claims, AppUser appUser) {
         return Jwts.builder().setClaims(claims)
                 .setSubject(appUser.getUsername())
@@ -61,4 +65,5 @@ public class JwtUtils {
         final String username = extractUsername(token);
         return (username.equals(appUser.getUsername()) && !isTokenExpired(token));
     }
+
 }

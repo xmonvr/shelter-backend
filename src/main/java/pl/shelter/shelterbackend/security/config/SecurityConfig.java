@@ -10,9 +10,11 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -29,13 +31,18 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final AppUserService appUserService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final LogoutHandler logoutHandler;
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:3000"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));       //todo
-        configuration.setAllowedHeaders(List.of("content-type"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedHeaders(List.of("content-type", "Authorization", "Access-Control-Allow-Headers",
+                "Access-Control-Request-Headers", "Access-Control-Request-Method"));
+        //określa, które nagłówki są dozwolone w żądaniach do serwera. Taki nagłówek bedzie mogl byc przekazany w zadaniach
+        configuration.setExposedHeaders(Arrays.asList("Authorization"));
+        // definiuje nagłówki, które będą dostępne w odpowiedziach z serwera.Umożliwiam dostęp do tego nagłówka na froncie w odpowiedziach otrzymanych za pomocą Fetch API.
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -54,7 +61,13 @@ public class SecurityConfig {
                 .and()  // kończy konfigurację sesji i rozpoczyna konfigurację uwierzytelniania
                 .authenticationProvider(authenticationProvider()) // definiuje sposób uwierzytelniania użytkowników
                 //tutaj mowimy springowi - zrob filter zanim zautentykujesz uzytkownika
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);     // dodaje filtr uwierzytelniania JWT przed domyślnym filtrem uwierzytelniania opartym na loginie i haśle
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)     // dodaje filtr uwierzytelniania JWT przed domyślnym filtrem uwierzytelniania opartym na loginie i haśle
+                .logout()
+                .logoutUrl("/auth/logout")
+                .addLogoutHandler(logoutHandler)       // tutaj jest zaimplementowany caly mechanizm logout
+                //lambda expression -> co ma sie stac po tym jak wyloguje sie z sukcesem
+                .logoutSuccessHandler(((request, response, authentication) -> SecurityContextHolder.clearContext())
+                );
         return http.build();
     }
 

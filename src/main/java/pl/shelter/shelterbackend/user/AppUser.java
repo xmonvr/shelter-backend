@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.shelter.shelterbackend.security.token.Token;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,10 +15,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,7 +32,7 @@ public class AppUser implements UserDetails {
     @Id
     @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
-    private long id;
+    private Integer id;
     private String firstName;
     private String lastName;
     private String email;
@@ -40,6 +43,8 @@ public class AppUser implements UserDetails {
     private AppUserRole appUserRole;
     private Boolean locked = false;
     private Boolean enabled = false;
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
 
     //konstruktor bez id, bo id bedzie automatycznie generowane
     public AppUser(String name, String lastName, String email, String password, String confirmPassword, LocalDate birthDate, AppUserRole appUserRole) {
