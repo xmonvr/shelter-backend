@@ -24,10 +24,11 @@ public class AnimalService {
     public Animal updateAnimal(Long id, Animal animal) {
         Animal animalUpdate = animalRepository.findById(id);
         animalUpdate.setName(animal.getName());
-        animalUpdate.setBreed(animal.getBreed());
+        animalUpdate.setTypeOfAnimal(animal.getTypeOfAnimal());
         animalUpdate.setChip_number(animal.getChip_number());
         animalUpdate.setGender(animal.getGender());
         animalUpdate.setIsVaccinated(animal.getIsVaccinated());
+        animalUpdate.setAge(animal.getAge());
         return animalRepository.save(animalUpdate);
     }
 

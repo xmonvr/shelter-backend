@@ -1,8 +1,17 @@
 package pl.shelter.shelterbackend.animal;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 @Getter
 @Setter
@@ -10,7 +19,8 @@ import javax.persistence.*;
 @Entity
 public class Animal {
     private String name;
-    private String breed;
+    @Enumerated(EnumType.STRING)
+    private TypeOfAnimal typeOfAnimal;
 //    private String Species;       //zrobic do tego enuma jako dog, cat, other;
     @Id     // primary key encji
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "animal_sequence")
@@ -21,13 +31,14 @@ public class Animal {
     @Enumerated(EnumType.STRING)
     private Gender gender;
     private Boolean isVaccinated;
-
-    public Animal(String name, String breed, String chip_number, Gender gender, Boolean isVaccinated) {
+    private int age;
+    public Animal(String name, TypeOfAnimal typeOfAnimal, String chip_number, Gender gender, Boolean isVaccinated, int age) {
         this.name = name;
-        this.breed = breed;
+        this.typeOfAnimal = typeOfAnimal;
         this.chip_number = chip_number;
         this.gender = gender;
         this.isVaccinated = isVaccinated;
+        this.age = age;
     }
 
     public Animal() {
