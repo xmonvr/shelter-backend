@@ -39,4 +39,8 @@ public class AnimalService {
     public List<Animal> getAllAnimals() {
         return animalRepository.findAll();
     }
+
+    public List<Animal> findFilteredAnimals(Integer ageMin, Integer ageMax, Gender gender, TypeOfAnimal typeOfAnimal) {
+        return animalRepository.filterAnimals(ageMin, ageMax, gender, typeOfAnimal);
+    }
 }

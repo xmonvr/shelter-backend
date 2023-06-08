@@ -1,12 +1,13 @@
 package pl.shelter.shelterbackend.animal;
 
 import lombok.AllArgsConstructor;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/animal")
+@RequestMapping(path = "/animal")
 @AllArgsConstructor
 public class AnimalController {
 
@@ -36,4 +37,11 @@ public class AnimalController {
     public List<Animal> getAllAnimals() {
         return animalService.getAllAnimals();
     }
+
+    @GetMapping("/filtered-animals")
+    public List<Animal> getFilteredAnimals(@RequestParam @Nullable Integer ageMin, @RequestParam @Nullable Integer ageMax, @RequestParam @Nullable Gender gender,
+                                           @RequestParam @Nullable TypeOfAnimal typeOfAnimal) {
+        return animalService.findFilteredAnimals(ageMin, ageMax, gender, typeOfAnimal);
+    }
+
 }
