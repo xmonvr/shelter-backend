@@ -16,6 +16,15 @@ import pl.shelter.shelterbackend.animal.Animal;
 import pl.shelter.shelterbackend.animal.AnimalRepository;
 import pl.shelter.shelterbackend.animal.TypeOfAnimal;
 
+import javax.activation.DataHandler;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
+import javax.activation.DataSource;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -141,27 +150,58 @@ public class AdoptionService {
         return document;
     }
 
-    public ByteArrayOutputStream preparePdfToSend(Long animalId, AdoptionForm adoptionForm) {
-        ByteArrayOutputStream outputStream;
-        outputStream = new ByteArrayOutputStream();
-
-        Document document = new Document(PageSize.A4, 50, 50, 50, 50);
-
+    public void preparePdfToSend(Long animalId, AdoptionForm adoptionForm) {
+        ByteArrayOutputStream outputStream = null;
         try {
+            MimeBodyPart textBodyPart = new MimeBodyPart();
+            textBodyPart.setText("Formularz przedadopcyjny w załączniku.");
+
+            outputStream = new ByteArrayOutputStream();
+
+            Document document = new Document(PageSize.A4, 50, 50, 50, 50);
+
             PdfWriter.getInstance(document, outputStream);
-        } catch (DocumentException e) {
-            throw new RuntimeException(e);
-        }
 
-        document.open();
-        try {
-            BaseFont baseFont = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.CP1250, BaseFont.EMBEDDED);
-            document.add(new Paragraph(convertToString(animalId, adoptionForm), new Font(baseFont)));
-        } catch (DocumentException | IOException e) {
+            document.open();
+            try {
+                BaseFont baseFont = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.CP1250, BaseFont.EMBEDDED);
+                document.add(new Paragraph(convertToString(animalId, adoptionForm), new Font(baseFont)));
+            } catch (DocumentException | IOException e) {
+                throw new RuntimeException(e);
+            }
+            document.addCreationDate();     //metadata
+            document.close();
+
+            byte[] bytes = outputStream.toByteArray();
+
+            //todo
+            DataSource dataSource = new ByteArrayDataSource(bytes, "application/pdf");
+            MimeBodyPart pdfBodyPart = new MimeBodyPart();
+            pdfBodyPart.setDataHandler(new DataHandler(dataSource));
+            pdfBodyPart.setFileName("formularz.pdf");
+
+            MimeMultipart mimeMultipart = new MimeMultipart();
+            mimeMultipart.addBodyPart(textBodyPart);
+            mimeMultipart.addBodyPart(pdfBodyPart);
+
+            String from = "schronisko.kontakt@gmail.com";   //todo
+            String to = "schronisko.kontakt@gmail.com";     //todo
+            String subject = "Formularz przedadopcyjny";
+
+            InternetAddress internetAddressFrom = new InternetAddress(from);
+            InternetAddress internetAddressTo = new InternetAddress(to);
+
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            mimeMessage.setFrom(internetAddressFrom);
+            mimeMessage.setSubject(subject);
+            mimeMessage.addRecipient(Message.RecipientType.TO, internetAddressTo);
+            mimeMessage.setContent(mimeMultipart);
+
+            mailSender.send(mimeMessage);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        document.addCreationDate();     //metadata
-        document.close();
-        return outputStream;
     }
 }
