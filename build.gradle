@@ -25,6 +25,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web:2.7.5'
 	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 	implementation 'io.jsonwebtoken:jjwt:0.2'
+	implementation 'com.itextpdf:itextpdf:5.5.13'
 	compileOnly 'org.projectlombok:lombok:1.18.24'
 	runtimeOnly 'org.postgresql:postgresql:42.3.7'
 	annotationProcessor 'org.projectlombok:lombok:1.18.24'

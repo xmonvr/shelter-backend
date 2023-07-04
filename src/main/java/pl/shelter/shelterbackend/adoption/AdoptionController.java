@@ -38,5 +38,15 @@ public class AdoptionController {
         return adoptionService.getAllAdoptions();
     }
 
+    @PostMapping("/adoption-form-pdf")
+    public void createAdoptionForm(@RequestBody AdoptionForm adoptionForm, @RequestParam Long animalId) {
+        adoptionService.preparePdfToDownload(animalId, adoptionForm);
+    }
+
+    @PostMapping("/send-adoption-form")
+    public void sendAdoptionForm(@RequestBody AdoptionForm adoptionForm, @RequestParam Long animalId) {
+        adoptionService.preparePdfToSend(animalId, adoptionForm);
+    }
+
 
 }
