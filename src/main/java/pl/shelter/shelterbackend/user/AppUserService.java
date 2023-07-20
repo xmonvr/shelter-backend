@@ -40,7 +40,7 @@ public class AppUserService implements UserDetailsService {
 
         if (userExists) {
             //TODO if email not confirmed send confirmation email
-            throw new IllegalStateException("email jest juz zajety.");
+            throw new IllegalStateException("Email is already taken.");
         }
 
         String encodedPassword = bCryptPasswordEncoder.encode(appUser.getPassword());
