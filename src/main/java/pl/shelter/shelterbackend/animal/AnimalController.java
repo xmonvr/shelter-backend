@@ -13,7 +13,7 @@ public class AnimalController {
 
     private AnimalService animalService;
 
-    @PostMapping
+    @PostMapping("/add-animal")
     public Animal createAnimal(@RequestBody Animal animal) {
         return animalService.createAnimal(animal);
     }
@@ -23,12 +23,12 @@ public class AnimalController {
         return animalService.getAnimalById(id);
     }
 
-    @PutMapping
+    @PutMapping("/edit-animal")
     public Animal updateAnimal(@RequestParam("id") Long id, @RequestBody Animal animal) {
         return animalService.updateAnimal(id, animal);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/delete-animal")
     public void deleteAnimals(@RequestParam("id") Long id) {
         animalService.deleteAnimal(id);
     }

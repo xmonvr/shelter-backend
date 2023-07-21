@@ -52,7 +52,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors().configurationSource(corsConfigurationSource()).and().csrf().disable()       // wyłącza ochronę przed atakiem CSRF (Cross-Site Request Forgery)
                 .authorizeRequests()    // rozpoczyna konfigurację autoryzacji żądań HTTP
-                .antMatchers("/**/auth/**", "/api/registration/**").permitAll() //// definiuje, które żądania są dostępne bez autoryzacji
+                .antMatchers("/animal/add-animal", "/animal/delete-animal", "/animal/edit-animal").hasAuthority("ADMIN")
+                .antMatchers("/**/auth/**", "/api/registration/**", "/animal/animals-list", "/animal/filtered-animals").permitAll() //// definiuje, które żądania są dostępne bez autoryzacji
                 .anyRequest().authenticated()       // definiuje, że wszystkie pozostałe żądania muszą być uwierzytelnione (zalogowany użytkownik)
                 .and()      /// kończy konfigurację autoryzacji i rozpoczyna konfigurację sesji
                 .sessionManagement()    // definiuje zarządzanie sesją

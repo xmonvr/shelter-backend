@@ -20,4 +20,9 @@ public class RegistrationController {
     public String confirm(@RequestParam("token") String token) {
         return registrationService.confirmToken(token);
     }
+
+    @PostMapping("/register-admin")
+    public String registerAdmin(@RequestBody RegistrationRequest request) {
+        return registrationService.registerAdmin(request);
+    }
 }
