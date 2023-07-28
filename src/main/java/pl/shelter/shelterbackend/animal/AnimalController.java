@@ -2,7 +2,9 @@ package pl.shelter.shelterbackend.animal;
 
 import lombok.AllArgsConstructor;
 import org.springframework.lang.Nullable;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -14,8 +16,16 @@ public class AnimalController {
     private AnimalService animalService;
 
     @PostMapping("/add-animal")
-    public Animal createAnimal(@RequestBody Animal animal) {
-        return animalService.createAnimal(animal);
+    public Animal createAnimal(@RequestParam TypeOfAnimal typeOfAnimal,
+                               @RequestParam String chipNumber,
+                               @RequestParam Gender gender,
+                               @RequestParam Boolean isVaccinated,
+                               @RequestParam String name,
+                               @RequestParam int age,
+                               @RequestParam String description,
+                               @RequestParam("image") MultipartFile image) {
+        Animal animal = new Animal(name,typeOfAnimal, chipNumber, gender, isVaccinated, age, description);
+        return animalService.createAnimal(animal, image);
     }
 
     @GetMapping("/animal-by-id")
@@ -24,12 +34,23 @@ public class AnimalController {
     }
 
     @PutMapping("/edit-animal")
-    public Animal updateAnimal(@RequestParam("id") Long id, @RequestBody Animal animal) {
-        return animalService.updateAnimal(id, animal);
+    @Transactional
+    public void updateAnimal(@RequestParam Long id,
+                               @RequestParam @Nullable TypeOfAnimal typeOfAnimal,
+                               @RequestParam @Nullable String chipNumber,
+                               @RequestParam @Nullable Gender gender,
+                               @RequestParam @Nullable Boolean isVaccinated,
+                               @RequestParam @Nullable String name,
+                               @RequestParam @Nullable Integer age,
+                               @RequestParam @Nullable String description,
+                               @RequestParam @Nullable MultipartFile image) {
+        Animal animal = new Animal(name,typeOfAnimal, chipNumber, gender, isVaccinated, age, description);
+        animalService.updateAnimal(id, animal, image);
     }
 
     @DeleteMapping("/delete-animal")
-    public void deleteAnimals(@RequestParam("id") Long id) {
+    @Transactional
+    public void deleteAnimals(@RequestParam/*("id")*/ Long id) {
         animalService.deleteAnimal(id);
     }
 

@@ -52,9 +52,32 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors().configurationSource(corsConfigurationSource()).and().csrf().disable()       // wyłącza ochronę przed atakiem CSRF (Cross-Site Request Forgery)
                 .authorizeRequests()    // rozpoczyna konfigurację autoryzacji żądań HTTP
-                .antMatchers("/animal/add-animal", "/animal/delete-animal", "/animal/edit-animal").hasAuthority("ADMIN")
-                .antMatchers("/**/auth/**", "/api/registration/**", "/animal/animals-list", "/animal/filtered-animals").permitAll() //// definiuje, które żądania są dostępne bez autoryzacji
-                .anyRequest().authenticated()       // definiuje, że wszystkie pozostałe żądania muszą być uwierzytelnione (zalogowany użytkownik)
+                .antMatchers(
+                        "/api/registration/register-admin",
+                        "/animal/add-animal",
+                        "/animal/delete-animal",
+                        "/animal/edit-animal",
+                        "/tab/add-about-entry",
+                        "/tab/add-contact-entry",
+                        "/tab/add-volunteering-entry"
+                )
+                .hasAuthority("ADMIN")
+                .antMatchers(
+                        "/api/adoptions/adoption-form-pdf",
+                        "/api/adoptions/send-adoption-form"
+                ).hasAuthority("USER")
+                .antMatchers(
+                        "/api/registration",
+                        "/api/registration/confirm",
+                        "/animal/animal-by-id",
+                        "/animal/filtered-animals",
+                        "/images/get-image-by-animalId",
+                        "/auth/login",
+                        "/tab/get-about-entry",
+                        "/tab/get-contact-entry",
+                        "/tab/get-volunteering-entry"
+                        ).permitAll() //// definiuje, które żądania są dostępne bez autoryzacji
+                .anyRequest().authenticated()
                 .and()      /// kończy konfigurację autoryzacji i rozpoczyna konfigurację sesji
                 .sessionManagement()    // definiuje zarządzanie sesją
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // definiuje politykę tworzenia sesji (tryb bezstanowy)

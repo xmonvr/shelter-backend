@@ -31,14 +31,17 @@ public class Animal {
     @Enumerated(EnumType.STRING)
     private Gender gender;
     private Boolean isVaccinated;
-    private int age;
-    public Animal(String name, TypeOfAnimal typeOfAnimal, String chip_number, Gender gender, Boolean isVaccinated, int age) {
+    private Integer age;
+    private String description;
+
+    public Animal(String name, TypeOfAnimal typeOfAnimal, String chip_number, Gender gender, Boolean isVaccinated, Integer age, String description) {
         this.name = name;
         this.typeOfAnimal = typeOfAnimal;
         this.chip_number = chip_number;
         this.gender = gender;
         this.isVaccinated = isVaccinated;
         this.age = age;
+        this.description = description;
     }
 
     public Animal() {
