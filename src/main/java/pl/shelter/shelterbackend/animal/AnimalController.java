@@ -54,15 +54,20 @@ public class AnimalController {
         animalService.deleteAnimal(id);
     }
 
-    @GetMapping("/animals-list")
-    public List<Animal> getAllAnimals() {
-        return animalService.getAllAnimals();
-    }
+//    @GetMapping("/animals-list")
+//    public List<Animal> getAllAnimals() {
+//        return animalService.getAllAnimals();
+//    }
 
     @GetMapping("/filtered-animals")
     public List<Animal> getFilteredAnimals(@RequestParam @Nullable Integer ageMin, @RequestParam @Nullable Integer ageMax, @RequestParam @Nullable Gender gender,
                                            @RequestParam @Nullable TypeOfAnimal typeOfAnimal) {
         return animalService.findFilteredAnimals(ageMin, ageMax, gender, typeOfAnimal);
     }
+
+//    @GetMapping("/animals-id")
+//    public List<Long> getAnimalsId() {
+//        return animalService.getAllIds();
+//    }
 
 }

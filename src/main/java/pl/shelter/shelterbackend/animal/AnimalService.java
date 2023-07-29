@@ -2,7 +2,6 @@ package pl.shelter.shelterbackend.animal;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.shelter.shelterbackend.animal.image.Image;
@@ -18,7 +17,6 @@ import java.util.List;
 @Slf4j
 public class AnimalService {
 
-    @Autowired
     private AnimalRepository animalRepository;
     private final ImageService imageService;
 
@@ -80,5 +78,49 @@ public class AnimalService {
 
     public List<Animal> findFilteredAnimals(Integer ageMin, Integer ageMax, Gender gender, TypeOfAnimal typeOfAnimal) {
         return animalRepository.filterAnimals(ageMin, ageMax, gender, typeOfAnimal);
+    }
+
+//    public void convertImage() {
+//            String fileSource = "C:/imgSource/image.jpg";
+//            String fileDestination = "C:/imgDestination/destination.jpeg";
+//
+//            try {
+//
+//                byte [] byteImage = Utils.ImageToByte(new Image(fileSource));
+//
+//                bd.addImage(byteImage, 1);
+//                System.out.println(org.postgresql.util.Base64.encodeBytes(bd.getImage(1)));
+//                Utils.byteToImage(bd.getImage(1), new Image(fileDestination));
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+//    }
+
+//    public void createImage(MultipartFile multipartFile) {
+//
+//        String fileName = generateFileName();
+//
+//        Image image = Image.build();
+//        image.setFileName(fileName);
+//        image.setFiles(multipartFile);
+//
+//        try {
+//            image.setData(multipartFile.getBytes());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return image;
+//    }
+
+    private String generateFileName() {
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Warsaw/Europe"));
+        log.info("---------------------------generateFileName");
+        log.info("now --> " + now);
+        return now.toString();
+    }
+
+    public List<Long> getAllIds() {
+        return animalRepository.findAllIds();
     }
 }
