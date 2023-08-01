@@ -39,3 +39,9 @@ spring:
 jwt:
   secret: 'Ae9yjdqB0rgT'
   expiration: 300000
+
+payu:
+  pos_id: 469153
+  client_id: 469153
+  client_secret: c1559af27c69c57fa4c06a5bb856b8e1
+  grant_type: client_credentials
