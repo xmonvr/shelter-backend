@@ -1,11 +1,11 @@
 package pl.shelter.shelterbackend.registration;
 
+import pl.shelter.shelterbackend.email.EmailService;
 import pl.shelter.shelterbackend.user.User;
 import pl.shelter.shelterbackend.user.UserRole;
-import pl.shelter.shelterbackend.user.AppUserService;
-import pl.shelter.shelterbackend.email.EmailSender;
-import pl.shelter.shelterbackend.registration.token.ConfirmationToken;
-import pl.shelter.shelterbackend.registration.token.ConfirmationTokenService;
+import pl.shelter.shelterbackend.user.UserService;
+import pl.shelter.shelterbackend.registration.token.RegistrationToken;
+import pl.shelter.shelterbackend.registration.token.RegistrationTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,74 +16,60 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class RegistrationService {
 
-    private final AppUserService appUserService;
-    private final EmailValidator emailValidator;
-    private final ConfirmationTokenService confirmationTokenService;
-    private final EmailSender emailSender;
+    private final UserService userService;
+    private final RegistrationTokenService registrationTokenService;
+    private final EmailService emailService;
 
-    public String register(RegistrationRequest request) {
-        boolean isValidEmail = emailValidator.test(request.getEmail());
-        if (!isValidEmail) {
-            throw new IllegalStateException("email not valid");
-        }
+    public String register(RegistrationRequest registrationRequest) {
 
         //token ktory wysylamy
-        String token = appUserService.
-                signUpUser(new User(request.getFirstName(), request.getLastName(), request.getEmail(),
-                        request.getPassword(),/* request.getConfirmPassword(),*/ request.getBirthDate(), UserRole.USER));
+        User newUser = new User(registrationRequest.getFirstName(), registrationRequest.getLastName(), registrationRequest.getEmail(),
+                registrationRequest.getPassword(),/* request.getConfirmPassword(),*/ registrationRequest.getBirthDate(), UserRole.USER);
+        String token = userService.signUpUser(newUser);
 
-        String link= "http://localhost:8081/api/registration/confirm?token=" + token;
+        String activateLink = "http://localhost:8081/api/registration/confirm?token=" + token;
 
-        emailSender.send(request.getEmail(), buildEmail(request.getFirstName(), link));
+        emailService.prepareRegistrationMail(registrationRequest.getEmail(), prepareEmail(registrationRequest.getFirstName(), activateLink));
 
         return token;
     }
 
     public String registerAdmin(RegistrationRequest request) {
-        boolean isValidEmail = emailValidator.test(request.getEmail());
-        if (!isValidEmail) {
-            throw new IllegalStateException("email not valid");
-        }
 
         //token ktory wysylamy
-        String token = appUserService.
-                signUpUser(new User(request.getFirstName(), request.getLastName(), request.getEmail(),
-                        request.getPassword(),/* request.getConfirmPassword(),*/ request.getBirthDate(), UserRole.ADMIN));
+        User newAdmin = new User(request.getFirstName(), request.getLastName(), request.getEmail(),
+                request.getPassword(),/* request.getConfirmPassword(),*/ request.getBirthDate(), UserRole.ADMIN);
+        String token = userService.signUpUser(newAdmin);
 
-        String link= "http://localhost:8081/api/registration/confirm?token=" + token;
+        String activateLink = "http://localhost:8081/api/registration/confirm?token=" + token;
 
-        emailSender.send(request.getEmail(), buildEmail(request.getFirstName(), link));
+        emailService.prepareRegistrationMail(request.getEmail(), prepareEmail(request.getFirstName(), activateLink));
 
         return token;
     }
 
     @Transactional
     public String confirmToken(String token) {
-        ConfirmationToken confirmationToken = confirmationTokenService
-                .getToken(token)
-                .orElseThrow(() ->
-                        new IllegalStateException("token not found"));
+        RegistrationToken registrationToken = registrationTokenService.getRegistrationToken(token);
 
-        if (confirmationToken.getConfirmedAt() != null) {
-            throw new IllegalStateException("email already confirmed");
+//        if (registrationToken.getConfirmedAt() != null) {
+//            throw new IllegalStateException("email already confirmed");
+//        }
+        LocalDateTime expirationTime = registrationToken.getExpiresAt();
+
+        if (expirationTime.isBefore(LocalDateTime.now())) {
+            throw new IllegalStateException("Registration token has expired");
         }
 
-        LocalDateTime expiredAt = confirmationToken.getExpiresAt();
-
-        if (expiredAt.isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("token expired");
-        }
-
-        confirmationTokenService.setConfirmedAt(token);
-        appUserService.enableAppUser(
-                confirmationToken.getUser().getEmail());
+        registrationTokenService.setConfirmedAt(token, LocalDateTime.now());
+        userService.enableUser(registrationToken.getUser().getEmail());
         return "Potwierdzono rejestrację! :)";
     }
 
-    private String buildEmail(String name, String link) {
+    private String prepareEmail(String name, String link) {
         return "<html>\n" +
                 "<head>\n" +
-                "  <title>Potwierdzenie rejestracji</title>\n" +
+                "  <title>Aktywacja konta</title>\n" +
                 "</head>\n" +
                 "<body>\n" +
                 "  <h1>Potwierdzenie rejestracji</h1>\n" +

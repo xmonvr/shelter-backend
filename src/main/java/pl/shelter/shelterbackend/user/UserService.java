@@ -1,11 +1,10 @@
 package pl.shelter.shelterbackend.user;
 
 import lombok.extern.slf4j.Slf4j;
-import pl.shelter.shelterbackend.registration.token.ConfirmationToken;
-import pl.shelter.shelterbackend.registration.token.ConfirmationTokenService;
+import pl.shelter.shelterbackend.registration.token.RegistrationToken;
+import pl.shelter.shelterbackend.registration.token.RegistrationTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.shelter.shelterbackend.security.config.JwtUtils;
@@ -19,39 +18,42 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class AppUserService implements UserDetailsService {
+public class UserService implements UserDetailsService {
 
-    private final static String USER_NOT_FOUND_MSG = "uzytkownik o podanym mailu %s nie istnieje";
-    private final AppUserRepository appUserRepository;
+    private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final ConfirmationTokenService confirmationTokenService;
+    private final RegistrationTokenService registrationTokenService;
     private final JwtUtils jwtUtils;
+//    private final EmailService emailService;
 
     @Override
-    public User loadUserByUsername(String email) throws UsernameNotFoundException {
-        return appUserRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, email)));
+    public User loadUserByUsername(String email) /*throws UsernameNotFoundException*/ {
+        return userRepository.findByEmail(email).orElseThrow(() ->
+                new IllegalStateException("Uzytkownik o podanym mailu %s nie istnieje"));
     }
 
     public String signUpUser(User user) {
         //jesli uzytkownik istnieje
-        boolean userExists =  appUserRepository.findByEmail(user.getEmail()).isPresent();
-
+        boolean userExists =  userRepository.findByEmail(user.getEmail()).isPresent();
+//        boolean isUserEnabled = userRepository.findByEmail(user.getEmail()).orElseThrow().getEnabled();
         if (userExists) {
             //TODO if email not confirmed send confirmation email
-            throw new IllegalStateException("Email jest już zajęty.");
+            throw new IllegalStateException("Email is already taken.");
+//            if (!isUserEnabled) {
+//                emailService.prepareRegistrationMail(user.getEmail(), );
+//            }
         }
 
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        User savedUser = appUserRepository.save(user);
+        User savedUser = userRepository.save(user);
 
         //send confirmation token
         String registrationToken = UUID.randomUUID().toString();
-        ConfirmationToken confirmationToken =
-                new ConfirmationToken(registrationToken, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), user);
-        confirmationTokenService.saveConfirmationToken(confirmationToken);
+        RegistrationToken confirmationToken =
+                new RegistrationToken(registrationToken, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), user);
+        registrationTokenService.saveRegistrationToken(confirmationToken);
         // todo send email
 
         String jwtToken = jwtUtils.generateToken(user);
@@ -72,8 +74,8 @@ public class AppUserService implements UserDetailsService {
         tokenRepository.save(token);
     }
 
-    public int enableAppUser(String email) {
-        return appUserRepository.enableAppUser(email);
+    public int enableUser(String email) {
+        return userRepository.enableUser(email);
     }
 
 }

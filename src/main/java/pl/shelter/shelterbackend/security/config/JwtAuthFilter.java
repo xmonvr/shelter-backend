@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import pl.shelter.shelterbackend.security.token.TokenRepository;
 import pl.shelter.shelterbackend.user.User;
-import pl.shelter.shelterbackend.user.AppUserService;
+import pl.shelter.shelterbackend.user.UserService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -23,7 +23,7 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    private final AppUserService appUserService;
+    private final UserService userService;
     private final JwtUtils jwtUtils;
     private final TokenRepository tokenRepository;
 
@@ -42,7 +42,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         userEmail = jwtUtils.extractUsername(jwtToken);
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            User user = appUserService.loadUserByUsername(userEmail);
+            User user = userService.loadUserByUsername(userEmail);
             boolean isTokenValid = tokenRepository.findByToken(jwtToken).map(token -> !token.isExpired() && !token.isRevoked()).orElse(false);
             if (jwtUtils.isTokenValid(jwtToken, user) && isTokenValid) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());

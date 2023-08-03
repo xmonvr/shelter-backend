@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 @Transactional(readOnly = true) //todo tylko do odczytu
-public interface AppUserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmail(String email);    // query w bazie
 
@@ -22,6 +22,6 @@ public interface AppUserRepository extends JpaRepository<User, Long> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE User a " + "SET a.enabled = TRUE WHERE a.email = ?1") //    ?1 odnosi się do pierwszego argumentu metody, czyli do email
-    int enableAppUser(String email);
+    @Query("UPDATE User u SET u.enabled = TRUE WHERE u.email = ?1") //    ?1 odnosi się do pierwszego argumentu metody, czyli do email
+    int enableUser(String email);
 }

@@ -16,8 +16,8 @@ public class RegistrationController {
     }
 
     //todo
-    @GetMapping(path = "confirm")
-    public String confirm(@RequestParam("token") String token) {
+    @GetMapping(/*path = */"/confirm")
+    public String confirmRegistration(@RequestParam/*("token")*/ String token) {
         return registrationService.confirmToken(token);
     }
 

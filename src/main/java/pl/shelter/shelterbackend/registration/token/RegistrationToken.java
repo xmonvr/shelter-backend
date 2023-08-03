@@ -20,20 +20,13 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "confirmation_tokens")
-public class ConfirmationToken {
+@Table(name = "registration_tokens")
+public class RegistrationToken {
 
     @Id
-    @SequenceGenerator(
-            name = "confirmation_token_sequence",
-            sequenceName = "confirmation_token_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "confirmation_token_sequence"
-    )
-    @Column(name = "confirmation_token_id")
+    @SequenceGenerator(name = "registration_token_sequence", sequenceName = "registration_token_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "registration_token_sequence")
+    @Column(name = "registration_token_id")
     private Long id;
     @Column(nullable = false, name = "token")
     private String token;
@@ -47,7 +40,7 @@ public class ConfirmationToken {
     @JoinColumn(nullable = false, name = "token_user_id")
     private User user;
 
-    public ConfirmationToken(String token, LocalDateTime createdAt, LocalDateTime expiresAt, User user) {
+    public RegistrationToken(String token, LocalDateTime createdAt, LocalDateTime expiresAt, User user) {
         this.token = token;
         this.createdAt = createdAt;
         this.expiresAt = expiresAt;

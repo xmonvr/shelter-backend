@@ -11,14 +11,14 @@ import javax.mail.internet.MimeMessage;
 
 @Service
 @AllArgsConstructor
-public class EmailService implements EmailSender {
+public class EmailService /*implements EmailSender*/ {
 
 //    private final static Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
     private final JavaMailSender mailSender;
 
-    @Override
+//    @Override
     @Async      //zeby nie blokowalo klienta
-    public void send(String to, String email) {
+    public void prepareRegistrationMail(String to, String email) {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");

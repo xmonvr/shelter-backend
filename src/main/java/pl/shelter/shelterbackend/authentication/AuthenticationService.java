@@ -11,17 +11,15 @@ import org.springframework.stereotype.Service;
 import pl.shelter.shelterbackend.security.config.JwtUtils;
 import pl.shelter.shelterbackend.security.token.TokenRepository;
 import pl.shelter.shelterbackend.user.User;
-import pl.shelter.shelterbackend.user.AppUserRepository;
-import pl.shelter.shelterbackend.user.AppUserService;
+import pl.shelter.shelterbackend.user.UserService;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
-    private final AppUserService appUserService;
+    private final UserService userService;
     private final JwtUtils jwtUtils;
-    private final AppUserRepository userRepository;
     private final TokenRepository tokenRepository;
 
 
@@ -40,7 +38,7 @@ public class AuthenticationService {
         // która jest przenoszona między warstwami aplikacji. Dzięki temu informacje o uwierzytelnieniu są dostępne w różnych
         // miejscach w aplikacji.
 
-        final User user = appUserService.loadUserByUsername(request.getEmail());
+        final User user = userService.loadUserByUsername(request.getEmail());
         var jwtToken = jwtUtils.generateToken(user);
         var refreshToken = jwtUtils.generateRefreshToken(user);
 
@@ -55,7 +53,7 @@ public class AuthenticationService {
             token.setRevoked(true);
         });
         tokenRepository.saveAll(validUserTokens);
-        appUserService.saveToken(user, jwtToken);
+        userService.saveToken(user, jwtToken);
 
         return ResponseEntity.ok().headers(addHeaders(jwtToken)).build();
     }

@@ -10,15 +10,12 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Repository
-public interface ConfirmationTokenRepository extends JpaRepository<ConfirmationToken, Long> {
+public interface RegistrationTokenRepository extends JpaRepository<RegistrationToken, Long> {
 
-    Optional<ConfirmationToken> findByToken(String token);
+    Optional<RegistrationToken> findByToken(String token);
 
     @Transactional
     @Modifying
-    @Query("UPDATE ConfirmationToken c " +
-            "SET c.confirmedAt = ?2 " +
-            "WHERE c.token = ?1")
-    int updateConfirmedAt(String token,
-                          LocalDateTime confirmedAt);
+    @Query("UPDATE RegistrationToken t SET t.confirmedAt = ?2 WHERE t.token = ?1")
+    int updateConfirmedAt(String token, LocalDateTime confirmedAt);
 }
