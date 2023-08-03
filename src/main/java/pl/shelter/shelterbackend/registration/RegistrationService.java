@@ -27,7 +27,7 @@ public class RegistrationService {
                 registrationRequest.getPassword(),/* request.getConfirmPassword(),*/ registrationRequest.getBirthDate(), UserRole.USER);
         String token = userService.signUpUser(newUser);
 
-        String activateLink = "http://localhost:8081/api/registration/confirm?token=" + token;
+        String activateLink = "http://localhost:8081/registration/confirm?token=" + token;
 
         emailService.prepareRegistrationMail(registrationRequest.getEmail(), prepareEmail(registrationRequest.getFirstName(), activateLink));
 
@@ -41,7 +41,7 @@ public class RegistrationService {
                 request.getPassword(),/* request.getConfirmPassword(),*/ request.getBirthDate(), UserRole.ADMIN);
         String token = userService.signUpUser(newAdmin);
 
-        String activateLink = "http://localhost:8081/api/registration/confirm?token=" + token;
+        String activateLink = "http://localhost:8081/registration/confirm?token=" + token;
 
         emailService.prepareRegistrationMail(request.getEmail(), prepareEmail(request.getFirstName(), activateLink));
 

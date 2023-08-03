@@ -53,7 +53,7 @@ public class SecurityConfig {
         http.cors().configurationSource(corsConfigurationSource()).and().csrf().disable()       // wyłącza ochronę przed atakiem CSRF (Cross-Site Request Forgery)
                 .authorizeRequests()    // rozpoczyna konfigurację autoryzacji żądań HTTP
                 .antMatchers(
-                        "/api/registration/register-admin",
+                        "/registration/register-admin",
                         "/animal/add-animal",
                         "/animal/delete-animal",
                         "/animal/edit-animal",
@@ -63,12 +63,12 @@ public class SecurityConfig {
                 )
                 .hasAuthority("ADMIN")
                 .antMatchers(
-                        "/api/adoptions/adoption-form-pdf",
-                        "/api/adoptions/send-adoption-form"
+                        "/adoptions/adoption-form-pdf",
+                        "/adoptions/send-adoption-form"
                 ).hasAuthority("USER")
                 .antMatchers(
-                        "/api/registration",
-                        "/api/registration/confirm",
+                        "/registration",
+                        "/registration/confirm",
                         "/animal/animal-by-id",
                         "/animal/filtered-animals",
                         "/images/get-image-by-animalId",
