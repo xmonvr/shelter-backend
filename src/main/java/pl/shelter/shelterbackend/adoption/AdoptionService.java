@@ -29,7 +29,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -37,36 +36,36 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AdoptionService {
 
-    @Autowired
-    private AdoptionRepository adoptionRepository;
+//    @Autowired
+//    private AdoptionRepository adoptionRepository;
     @Autowired
     private AnimalRepository animalRepository;
     private final JavaMailSender mailSender;
 
     //todo sprawidzic czy dziala
-    public Adoption createAdoption(Adoption adoption) {
-//        System.out.println(adoption.toString());
-//        Long animalId = adoption.getAnimal().getId();
-//        Animal animal = animalRepository.findById(animalId);
-//        adoption.setAnimal(animal);
-        return adoptionRepository.save(adoption);
-    }
-
-    public Adoption getAdoptionById(Long id) {
-        return adoptionRepository.findById(id);
-    }
-
-    public Adoption updateAdoption(Adoption adoption) {
-        return adoptionRepository.save(adoption);
-    }
-
-    public void deleteAdoption(Long id) {
-        adoptionRepository.deleteById(id);
-    }
-
-    public List<Adoption> getAllAdoptions() {
-        return adoptionRepository.findAll();
-    }
+//    public Adoption createAdoption(Adoption adoption) {
+////        System.out.println(adoption.toString());
+////        Long animalId = adoption.getAnimal().getId();
+////        Animal animal = animalRepository.findById(animalId);
+////        adoption.setAnimal(animal);
+//        return adoptionRepository.save(adoption);
+//    }
+//
+//    public Adoption getAdoptionById(Long id) {
+//        return adoptionRepository.findById(id);
+//    }
+//
+//    public Adoption updateAdoption(Adoption adoption) {
+//        return adoptionRepository.save(adoption);
+//    }
+//
+//    public void deleteAdoption(Long id) {
+//        adoptionRepository.deleteById(id);
+//    }
+//
+//    public List<Adoption> getAllAdoptions() {
+//        return adoptionRepository.findAll();
+//    }
 
     public String convertToString(Long animalId, AdoptionForm adoptionForm) {
         Animal animal = animalRepository.findById(animalId);
