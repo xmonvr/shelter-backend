@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.shelter.shelterbackend.security.token.Token;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -18,6 +19,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
@@ -27,41 +29,51 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
+@Table(name = "users")
 @ToString
 @Slf4j
-public class AppUser implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
+    @Column(name = "user_id")
     private Integer id;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
+    @Column(name = "email")
     private String email;
+//    @Column(name = "password")
     private String password;
-    private String confirmPassword;
+//    private String confirmPassword;
+//    @Column(name = "birth_date")
     private LocalDate birthDate;
     @Enumerated(EnumType.STRING)
-    private AppUserRole appUserRole;
+//    @Column(name = "user_role")
+    private UserRole userRole;
+//    @Column(name = "locked")
     private Boolean locked = false;
+//    @Column(name = "enabled")
     private Boolean enabled = false;
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
 
     //konstruktor bez id, bo id bedzie automatycznie generowane
-    public AppUser(String name, String lastName, String email, String password, String confirmPassword, LocalDate birthDate, AppUserRole appUserRole) {
+    public User(String name, String lastName, String email, String password, /*String confirmPassword,*/ LocalDate birthDate, UserRole userRole) {
         this.firstName = name;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.confirmPassword = confirmPassword;
+//        this.confirmPassword = confirmPassword;
         this.birthDate = birthDate;
-        this.appUserRole = appUserRole;
+        this.userRole = userRole;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(appUserRole.name());
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.name());
         log.info("getAuthorities() --> " + authority);
         return Collections.singletonList(authority);
     }

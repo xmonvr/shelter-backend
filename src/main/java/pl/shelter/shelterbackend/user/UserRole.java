@@ -1,6 +1,6 @@
 package pl.shelter.shelterbackend.user;
 
-public enum AppUserRole {
+public enum UserRole {
     USER,
     ADMIN
 }

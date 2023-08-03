@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "image")
+@Table(name = "images")
 @Getter
 @Setter
 public class Image {

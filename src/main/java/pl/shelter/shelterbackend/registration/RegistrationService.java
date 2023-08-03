@@ -1,7 +1,7 @@
 package pl.shelter.shelterbackend.registration;
 
-import pl.shelter.shelterbackend.user.AppUser;
-import pl.shelter.shelterbackend.user.AppUserRole;
+import pl.shelter.shelterbackend.user.User;
+import pl.shelter.shelterbackend.user.UserRole;
 import pl.shelter.shelterbackend.user.AppUserService;
 import pl.shelter.shelterbackend.email.EmailSender;
 import pl.shelter.shelterbackend.registration.token.ConfirmationToken;
@@ -29,8 +29,8 @@ public class RegistrationService {
 
         //token ktory wysylamy
         String token = appUserService.
-                signUpUser(new AppUser(request.getFirstName(), request.getLastName(), request.getEmail(),
-                        request.getPassword(), request.getConfirmPassword(), request.getBirthDate(), AppUserRole.USER));
+                signUpUser(new User(request.getFirstName(), request.getLastName(), request.getEmail(),
+                        request.getPassword(),/* request.getConfirmPassword(),*/ request.getBirthDate(), UserRole.USER));
 
         String link= "http://localhost:8081/api/registration/confirm?token=" + token;
 
@@ -47,8 +47,8 @@ public class RegistrationService {
 
         //token ktory wysylamy
         String token = appUserService.
-                signUpUser(new AppUser(request.getFirstName(), request.getLastName(), request.getEmail(),
-                        request.getPassword(), request.getConfirmPassword(), request.getBirthDate(), AppUserRole.ADMIN));
+                signUpUser(new User(request.getFirstName(), request.getLastName(), request.getEmail(),
+                        request.getPassword(),/* request.getConfirmPassword(),*/ request.getBirthDate(), UserRole.ADMIN));
 
         String link= "http://localhost:8081/api/registration/confirm?token=" + token;
 
@@ -76,8 +76,8 @@ public class RegistrationService {
 
         confirmationTokenService.setConfirmedAt(token);
         appUserService.enableAppUser(
-                confirmationToken.getAppUser().getEmail());
-        return "confirmed";
+                confirmationToken.getUser().getEmail());
+        return "Potwierdzono rejestrację! :)";
     }
 
     private String buildEmail(String name, String link) {

@@ -8,7 +8,6 @@ import java.util.List;
 
 @Repository
 public interface AnimalRepository extends JpaRepository<Animal, String> {
-    //defaultowo jparepo zawiera findAll(), finfById(id), save(T entity), deleteById(id);
     Animal findById(Long id);
     void deleteById(Long id);
     @Query("SELECT animal FROM Animal animal WHERE" +

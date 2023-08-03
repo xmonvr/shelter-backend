@@ -29,38 +29,38 @@ public class AppUserService implements UserDetailsService {
     private final JwtUtils jwtUtils;
 
     @Override
-    public AppUser loadUserByUsername(String email) throws UsernameNotFoundException {
+    public User loadUserByUsername(String email) throws UsernameNotFoundException {
         return appUserRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, email)));
     }
 
-    public String signUpUser(AppUser appUser) {
+    public String signUpUser(User user) {
         //jesli uzytkownik istnieje
-        boolean userExists =  appUserRepository.findByEmail(appUser.getEmail()).isPresent();
+        boolean userExists =  appUserRepository.findByEmail(user.getEmail()).isPresent();
 
         if (userExists) {
             //TODO if email not confirmed send confirmation email
-            throw new IllegalStateException("Email is already taken.");
+            throw new IllegalStateException("Email jest już zajęty.");
         }
 
-        String encodedPassword = bCryptPasswordEncoder.encode(appUser.getPassword());
-        appUser.setPassword(encodedPassword);
-        AppUser savedUser = appUserRepository.save(appUser);
+        String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        User savedUser = appUserRepository.save(user);
 
         //send confirmation token
         String registrationToken = UUID.randomUUID().toString();
         ConfirmationToken confirmationToken =
-                new ConfirmationToken(registrationToken, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), appUser);
+                new ConfirmationToken(registrationToken, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), user);
         confirmationTokenService.saveConfirmationToken(confirmationToken);
         // todo send email
 
-        String jwtToken = jwtUtils.generateToken(appUser);
+        String jwtToken = jwtUtils.generateToken(user);
         saveToken(savedUser, jwtToken);
 
         return registrationToken;
     }
 
-    public void saveToken(AppUser user, String jwtToken) {
+    public void saveToken(User user, String jwtToken) {
         Token token = Token.builder()
                 .user(user)
                 .token(jwtToken)

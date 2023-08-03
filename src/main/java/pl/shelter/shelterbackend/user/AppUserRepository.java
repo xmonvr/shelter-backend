@@ -9,19 +9,19 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Repository
-@Transactional(readOnly = true) //tylko do odczytu
-public interface AppUserRepository extends JpaRepository<AppUser, Long> {
+@Transactional(readOnly = true) //todo tylko do odczytu
+public interface AppUserRepository extends JpaRepository<User, Long> {
 
-    Optional<AppUser> findByEmail(String email);    // query w bazie
+    Optional<User> findByEmail(String email);    // query w bazie
 
-    @Query("SELECT user.password FROM AppUser user WHERE user.email = ?1")
+    @Query("SELECT user.password FROM User user WHERE user.email = ?1")
     String findPasswordByEmail(String email);
 
-    @Query("SELECT user.id FROM AppUser user WHERE user.email = ?1")
+    @Query("SELECT user.id FROM User user WHERE user.email = ?1")
     String findIdByEmail(String email);
 
     @Transactional
     @Modifying
-    @Query("UPDATE AppUser a " + "SET a.enabled = TRUE WHERE a.email = ?1") //    ?1 odnosi się do pierwszego argumentu metody, czyli do email
+    @Query("UPDATE User a " + "SET a.enabled = TRUE WHERE a.email = ?1") //    ?1 odnosi się do pierwszego argumentu metody, czyli do email
     int enableAppUser(String email);
 }

@@ -6,7 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import pl.shelter.shelterbackend.user.AppUser;
+import pl.shelter.shelterbackend.user.User;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -42,28 +42,28 @@ public class JwtUtils {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(AppUser appUser) {
+    public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, appUser);
+        return createToken(claims, user);
     }
 
-    public String generateRefreshToken(AppUser appUser) {
-        return createToken(new HashMap<>(), appUser);
+    public String generateRefreshToken(User user) {
+        return createToken(new HashMap<>(), user);
     }
 
-    private String createToken(Map<String, Object> claims, AppUser appUser) {
+    private String createToken(Map<String, Object> claims, User user) {
         return Jwts.builder().setClaims(claims)
-                .setSubject(appUser.getUsername())
-                .claim("authorities", appUser.getAuthorities())
+                .setSubject(user.getUsername())
+                .claim("authorities", user.getAuthorities())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(24)))
+                .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(24)))      //24h
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
 
-    public Boolean isTokenValid(String token, AppUser appUser) {
+    public Boolean isTokenValid(String token, User user) {
         final String username = extractUsername(token);
-        return (username.equals(appUser.getUsername()) && !isTokenExpired(token));
+        return (username.equals(user.getUsername()) && !isTokenExpired(token));
     }
 
 }
