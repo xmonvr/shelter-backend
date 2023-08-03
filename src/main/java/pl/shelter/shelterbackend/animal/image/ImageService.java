@@ -1,6 +1,5 @@
 package pl.shelter.shelterbackend.animal.image;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;

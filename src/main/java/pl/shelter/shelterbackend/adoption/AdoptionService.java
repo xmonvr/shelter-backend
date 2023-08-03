@@ -75,13 +75,6 @@ public class AdoptionService {
 
         stringBuilder.append(personalPartString);
 
-/*        adoptionForm.questions.entrySet().forEach(a -> {
-            int i = 1;
-            String questionsString = "\nPytanie nr " + i + "\n" + a.getKey() + "\n " + a.getValue();
-            stringBuilder.append(questionsString);
-            i++;
-        });*/
-
         int i = 1;
         for (Map.Entry<String, String> entry : adoptionForm.questions.entrySet()) {
             String questionsString = i + ". " + entry.getKey() + "\n " + entry.getValue() + "\n\n";

@@ -3,7 +3,13 @@ package pl.shelter.shelterbackend.animal;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -50,24 +56,13 @@ public class AnimalController {
 
     @DeleteMapping("/delete-animal")
     @Transactional
-    public void deleteAnimals(@RequestParam/*("id")*/ Long id) {
+    public void deleteAnimals(@RequestParam Long id) {
         animalService.deleteAnimal(id);
     }
-
-//    @GetMapping("/animals-list")
-//    public List<Animal> getAllAnimals() {
-//        return animalService.getAllAnimals();
-//    }
 
     @GetMapping("/filtered-animals")
     public List<Animal> getFilteredAnimals(@RequestParam @Nullable Integer ageMin, @RequestParam @Nullable Integer ageMax, @RequestParam @Nullable Gender gender,
                                            @RequestParam @Nullable TypeOfAnimal typeOfAnimal) {
         return animalService.findFilteredAnimals(ageMin, ageMax, gender, typeOfAnimal);
     }
-
-//    @GetMapping("/animals-id")
-//    public List<Long> getAnimalsId() {
-//        return animalService.getAllIds();
-//    }
-
 }

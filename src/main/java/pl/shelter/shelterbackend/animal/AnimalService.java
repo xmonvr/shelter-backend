@@ -8,8 +8,6 @@ import pl.shelter.shelterbackend.animal.image.Image;
 import pl.shelter.shelterbackend.animal.image.ImageService;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -113,14 +111,14 @@ public class AnimalService {
 //        return image;
 //    }
 
-    private String generateFileName() {
-        LocalDateTime now = LocalDateTime.now(ZoneId.of("Warsaw/Europe"));
-        log.info("---------------------------generateFileName");
-        log.info("now --> " + now);
-        return now.toString();
-    }
-
-    public List<Long> getAllIds() {
-        return animalRepository.findAllIds();
-    }
+//    private String generateFileName() {
+//        LocalDateTime now = LocalDateTime.now(ZoneId.of("Warsaw/Europe"));
+//        log.info("---------------------------generateFileName");
+//        log.info("now --> " + now);
+//        return now.toString();
+//    }
+//
+//    public List<Long> getAllIds() {
+//        return animalRepository.findAllIds();
+//    }
 }
