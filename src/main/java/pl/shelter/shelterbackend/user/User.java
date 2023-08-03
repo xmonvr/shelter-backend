@@ -45,17 +45,17 @@ public class User implements UserDetails {
     private String lastName;
     @Column(name = "email")
     private String email;
-//    @Column(name = "password")
+    @Column(name = "password")
     private String password;
 //    private String confirmPassword;
-//    @Column(name = "birth_date")
+    @Column(name = "birth_date")
     private LocalDate birthDate;
     @Enumerated(EnumType.STRING)
-//    @Column(name = "user_role")
+    @Column(name = "user_role")
     private UserRole userRole;
-//    @Column(name = "locked")
+    @Column(name = "locked")
     private Boolean locked = false;
-//    @Column(name = "enabled")
+    @Column(name = "enabled")
     private Boolean enabled = false;
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;

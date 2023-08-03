@@ -35,7 +35,7 @@ public class AnimalController {
     }
 
     @GetMapping("/animal-by-id")
-    public Animal getAnimalById(@RequestParam("id") Long id) {
+    public Animal getAnimalById(@RequestParam/*("id")*/ Long id) {
         return animalService.getAnimalById(id);
     }
 
