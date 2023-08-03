@@ -9,7 +9,6 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import pl.shelter.shelterbackend.animal.Animal;
@@ -35,37 +34,9 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 public class AdoptionService {
-
 //    @Autowired
-//    private AdoptionRepository adoptionRepository;
-    @Autowired
-    private AnimalRepository animalRepository;
+    private final AnimalRepository animalRepository;
     private final JavaMailSender mailSender;
-
-    //todo sprawidzic czy dziala
-//    public Adoption createAdoption(Adoption adoption) {
-////        System.out.println(adoption.toString());
-////        Long animalId = adoption.getAnimal().getId();
-////        Animal animal = animalRepository.findById(animalId);
-////        adoption.setAnimal(animal);
-//        return adoptionRepository.save(adoption);
-//    }
-//
-//    public Adoption getAdoptionById(Long id) {
-//        return adoptionRepository.findById(id);
-//    }
-//
-//    public Adoption updateAdoption(Adoption adoption) {
-//        return adoptionRepository.save(adoption);
-//    }
-//
-//    public void deleteAdoption(Long id) {
-//        adoptionRepository.deleteById(id);
-//    }
-//
-//    public List<Adoption> getAllAdoptions() {
-//        return adoptionRepository.findAll();
-//    }
 
     public String convertToString(Long animalId, AdoptionForm adoptionForm) {
         Animal animal = animalRepository.findById(animalId);

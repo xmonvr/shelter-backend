@@ -1,9 +1,11 @@
 package pl.shelter.shelterbackend.adoption;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/adoptions")
@@ -11,32 +13,6 @@ import java.util.List;
 public class AdoptionController {
 
     AdoptionService adoptionService;
-
-//    @PostMapping
-//    public Adoption createAdoption(@RequestBody Adoption adoption) {
-//
-//        return adoptionService.createAdoption(adoption);
-//    }
-
-//    @GetMapping
-//    public Adoption getAdoptionById(@RequestParam Long id) {
-//        return adoptionService.getAdoptionById(id);
-//    }
-
-//    @PutMapping
-//    public Adoption updateAdoption(@RequestBody Adoption adoption) {
-//        return adoptionService.updateAdoption(adoption);
-//    }
-
-//    @DeleteMapping
-//    public void deleteAdoption(@RequestParam Long id) {
-//        adoptionService.deleteAdoption(id);
-//    }
-
-//    @GetMapping("/adoption-list")
-//    public List<Adoption> getAllAdoptions() {
-//        return adoptionService.getAllAdoptions();
-//    }
 
     @PostMapping("/adoption-form-pdf")
     public void createAdoptionForm(@RequestBody AdoptionForm adoptionForm, @RequestParam Long animalId) {
@@ -47,6 +23,5 @@ public class AdoptionController {
     public void sendAdoptionForm(@RequestBody AdoptionForm adoptionForm, @RequestParam Long animalId) {
         adoptionService.preparePdfToSend(animalId, adoptionForm);
     }
-
 
 }
