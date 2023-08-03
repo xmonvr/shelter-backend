@@ -10,15 +10,13 @@ import com.itextpdf.text.pdf.PdfWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import pl.shelter.shelterbackend.animal.Animal;
 import pl.shelter.shelterbackend.animal.AnimalRepository;
 import pl.shelter.shelterbackend.animal.TypeOfAnimal;
 
 import javax.activation.DataHandler;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
@@ -114,16 +112,21 @@ public class AdoptionService {
     }
 
     public void preparePdfToSend(Long animalId, AdoptionForm adoptionForm) {
-        ByteArrayOutputStream outputStream = null;
-        try {
-            MimeBodyPart textBodyPart = new MimeBodyPart();
-            textBodyPart.setText("Formularz przedadopcyjny w załączniku.");
+        String documentName = "formularz.pdf";
+        String from = "schronisko.kontakt@gmail.com";   //todo
+        String to = "schronisko.kontakt@gmail.com";     //todo
+        String subject = "Formularz przedadopcyjny";
 
-            outputStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream byteArrayOutputStream = null;
+        try {
+            MimeBodyPart emailTextBodyPart = new MimeBodyPart();
+            emailTextBodyPart.setText("Formularz przedadopcyjny w załączniku.");
+
+            byteArrayOutputStream = new ByteArrayOutputStream();
 
             Document document = new Document(PageSize.A4, 50, 50, 50, 50);
 
-            PdfWriter.getInstance(document, outputStream);
+            PdfWriter.getInstance(document, byteArrayOutputStream);
 
             document.open();
             try {
@@ -135,34 +138,37 @@ public class AdoptionService {
             document.addCreationDate();     //metadata
             document.close();
 
-            byte[] bytes = outputStream.toByteArray();
+            byte[] bytes = byteArrayOutputStream.toByteArray();
 
             //todo
             DataSource dataSource = new ByteArrayDataSource(bytes, "application/pdf");
             MimeBodyPart pdfBodyPart = new MimeBodyPart();
             pdfBodyPart.setDataHandler(new DataHandler(dataSource));
-            pdfBodyPart.setFileName("formularz.pdf");
+            pdfBodyPart.setFileName(documentName);
 
             MimeMultipart mimeMultipart = new MimeMultipart();
-            mimeMultipart.addBodyPart(textBodyPart);
+            mimeMultipart.addBodyPart(emailTextBodyPart);
             mimeMultipart.addBodyPart(pdfBodyPart);
 
-            String from = "schronisko.kontakt@gmail.com";   //todo
-            String to = "schronisko.kontakt@gmail.com";     //todo
-            String subject = "Formularz przedadopcyjny";
-
-            InternetAddress internetAddressFrom = new InternetAddress(from);
-            InternetAddress internetAddressTo = new InternetAddress(to);
-
             MimeMessage mimeMessage = mailSender.createMimeMessage();
-            mimeMessage.setFrom(internetAddressFrom);
-            mimeMessage.setSubject(subject);
-            mimeMessage.addRecipient(Message.RecipientType.TO, internetAddressTo);
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+//            helper.setText(email, true);
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setFrom(from);
             mimeMessage.setContent(mimeMultipart);
-
             mailSender.send(mimeMessage);
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
+
+//            InternetAddress internetAddressFrom = new InternetAddress(from);
+//            InternetAddress internetAddressTo = new InternetAddress(to);
+//
+//            MimeMessage mimeMessage = mailSender.createMimeMessage();
+//            mimeMessage.setFrom(internetAddressFrom);
+//            mimeMessage.setSubject(subject);
+//            mimeMessage.addRecipient(Message.RecipientType.TO, internetAddressTo);
+//            mimeMessage.setContent(mimeMultipart);
+//
+//            mailSender.send(mimeMessage);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
