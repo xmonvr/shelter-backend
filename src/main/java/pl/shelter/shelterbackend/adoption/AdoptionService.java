@@ -37,7 +37,7 @@ public class AdoptionService {
     private final JavaMailSender mailSender;
 
     public String convertToString(Long animalId, AdoptionForm adoptionForm) {
-        Animal animal = animalRepository.findById(animalId);
+        Animal animal = animalRepository.findById(animalId).orElseThrow();
 
         String isVaccinated;
         if (animal.getIsVaccinated()) {

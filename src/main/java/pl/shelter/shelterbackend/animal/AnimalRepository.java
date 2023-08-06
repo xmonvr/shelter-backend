@@ -5,10 +5,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface AnimalRepository extends JpaRepository<Animal, String> {
-    Animal findById(Long id);
+public interface AnimalRepository extends JpaRepository<Animal, Long> {
+    Optional<Animal> findById(Long id);
     void deleteById(Long id);
     @Query("SELECT animal FROM Animal animal WHERE" +
     "(:ageMin is null OR animal.age >= :ageMin) AND" +

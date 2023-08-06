@@ -25,11 +25,11 @@ public class AnimalService {
     }
 
     public Animal getAnimalById(Long id) {
-        return animalRepository.findById(id);
+        return animalRepository.findById(id).orElseThrow();
     }
 
     public void updateAnimal(Long id, Animal animal, MultipartFile image) {
-        Animal animalUpdate = animalRepository.findById(id);
+        Animal animalUpdate = animalRepository.findById(id).orElseThrow();
         if (animal.getName() != null) {
             animalUpdate.setName(animal.getName());
         }
