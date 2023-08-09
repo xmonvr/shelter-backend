@@ -6,7 +6,7 @@ plugins {
 
 group = 'shelter.shelterbackend'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+sourceCompatibility = '17.0.8'
 
 configurations {
 	compileOnly {
