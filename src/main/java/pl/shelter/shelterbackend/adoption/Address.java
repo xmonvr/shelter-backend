@@ -1,4 +1,4 @@
-package pl.shelter.shelterbackend.Address;
+package pl.shelter.shelterbackend.adoption;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Address {
-    private String id;
     private String street;
     private String houseNumber;
     private String city;

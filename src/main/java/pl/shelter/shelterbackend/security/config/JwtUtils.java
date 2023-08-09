@@ -22,11 +22,11 @@ public class JwtUtils {
     @Value("${jwt.secret}")
     private String SECRET_KEY;
 
-    public String extractUsername(String token) {
+    public String getUsernameFromToken(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public Date extractExpiration(String token) {
+    public Date getExpirationFromToken(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
@@ -39,7 +39,7 @@ public class JwtUtils {
     }
 
     private Boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+        return getExpirationFromToken(token).before(new Date());
     }
 
     public String generateToken(User user) {
@@ -62,8 +62,7 @@ public class JwtUtils {
     }
 
     public Boolean isTokenValid(String token, User user) {
-        final String username = extractUsername(token);
+        final String username = getUsernameFromToken(token);
         return (username.equals(user.getUsername()) && !isTokenExpired(token));
     }
-
 }

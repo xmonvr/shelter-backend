@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -18,8 +17,7 @@ import lombok.Setter;
 @Setter
 public class Image {
     @Id     // primary key encji
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "image_sequence")
-    @SequenceGenerator(name = "image_sequence", sequenceName = "image_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_id")
     private Long id;
     @Lob
@@ -27,8 +25,6 @@ public class Image {
     private byte[] data;
     @Column(name = "image_name")
     private String imageName;
-//    @Column(name = "content_type")
-//    private String contentType;
     @Column(name = "animal_id")
     private Long animalId;
 }

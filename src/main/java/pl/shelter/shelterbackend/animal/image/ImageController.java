@@ -19,7 +19,7 @@ public class ImageController {
     @GetMapping(value = "/get-image-by-animalId", produces = MediaType.IMAGE_JPEG_VALUE)
     @Transactional
     public byte[] getImage(@RequestParam Long animalId) {
-        return imageService.getFileByAnimalId(animalId).orElseThrow().getData();
+        return imageService.getFileByAnimalId(animalId).getData();
     }
 }
 

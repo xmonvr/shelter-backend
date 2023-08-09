@@ -40,7 +40,7 @@ public class AuthenticationService {
 
         final User user = userService.loadUserByUsername(request.getEmail());
         var jwtToken = jwtUtils.generateToken(user);
-        var refreshToken = jwtUtils.generateRefreshToken(user);
+//        var refreshToken = jwtUtils.generateRefreshToken(user);
 
         //uniewazniamy wszystkie stare tokeny
         var validUserTokens = tokenRepository.findAllValidTokenByUserId(user.getId());

@@ -1,7 +1,7 @@
 package pl.shelter.shelterbackend.animal;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -11,23 +11,21 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Getter
 @Setter
-@EqualsAndHashCode
+@NoArgsConstructor
 @Entity
 @Table(name = "animals")
 public class Animal {
     @Column(name = "animal_name")
     private String name;
     @Column(name = "type_of_animal")
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)        //todo
     private TypeOfAnimal typeOfAnimal;
     @Id     // primary key encji
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "animal_sequence")
-    @SequenceGenerator(name = "animal_sequence", sequenceName = "animal_sequence", allocationSize = 1)
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column(name="animal_id")
     private Long id;
     @Column(name = "chip_number")
@@ -52,7 +50,4 @@ public class Animal {
         this.description = description;
     }
 
-    public Animal() {
-
-    }
 }

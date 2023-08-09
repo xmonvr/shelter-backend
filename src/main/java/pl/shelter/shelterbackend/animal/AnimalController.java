@@ -35,12 +35,12 @@ public class AnimalController {
     }
 
     @GetMapping("/animal-by-id")
-    public Animal getAnimalById(@RequestParam/*("id")*/ Long id) {
+    public Animal getAnimalById(@RequestParam Long id) {
         return animalService.getAnimalById(id);
     }
 
     @PutMapping("/edit-animal")
-    @Transactional
+    @Transactional      //w przypadku large object (lob), czyli obraz, musi byc transakcyjnosc
     public void updateAnimal(@RequestParam Long id,
                                @RequestParam @Nullable TypeOfAnimal typeOfAnimal,
                                @RequestParam @Nullable String chipNumber,
@@ -55,8 +55,8 @@ public class AnimalController {
     }
 
     @DeleteMapping("/delete-animal")
-    @Transactional
-    public void deleteAnimals(@RequestParam Long id) {
+    @Transactional      //w przypadku large object (lob), czyli obraz, musi byc transakcyjnosc
+    public void deleteAnimal(@RequestParam Long id) {
         animalService.deleteAnimal(id);
     }
 

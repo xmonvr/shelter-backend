@@ -18,7 +18,4 @@ public interface AnimalRepository extends JpaRepository<Animal, Long> {
     "(:typeOfAnimal is null OR animal.typeOfAnimal = :typeOfAnimal)")
     List<Animal> filterAnimals(Integer ageMin, Integer ageMax, Gender gender, TypeOfAnimal typeOfAnimal);
 
-    @Query("SELECT id FROM Animal")
-    List<Long> findAllIds();
-
 }

@@ -14,19 +14,19 @@ import javax.mail.internet.MimeMessage;
 public class EmailService /*implements EmailSender*/ {
 
 //    private final static Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
-    private final JavaMailSender mailSender;
+    private final JavaMailSender javaMailSender;
 
 //    @Override
     @Async      //zeby nie blokowalo klienta
     public void prepareRegistrationMail(String to, String email) {
         try {
-            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
             helper.setText(email, true);
             helper.setTo(to);
             helper.setSubject("Potwierdz swoją rejestrację");
             helper.setFrom("schronisko.kontakt@gmail.com");
-            mailSender.send(mimeMessage);
+            javaMailSender.send(mimeMessage);
         }
         catch (MessagingException e) {
             throw new RuntimeException(e);

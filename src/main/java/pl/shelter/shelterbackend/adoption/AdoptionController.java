@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class AdoptionController {
 
-    AdoptionService adoptionService;
+    private AdoptionService adoptionService;
 
     @PostMapping("/adoption-form-pdf")
     public void createAdoptionForm(@RequestBody AdoptionForm adoptionForm, @RequestParam Long animalId) {

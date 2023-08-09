@@ -32,9 +32,8 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 public class AdoptionService {
-//    @Autowired
     private final AnimalRepository animalRepository;
-    private final JavaMailSender mailSender;
+    private final JavaMailSender javaMailSender;
 
     public String convertToString(Long animalId, AdoptionForm adoptionForm) {
         Animal animal = animalRepository.findById(animalId).orElseThrow();
@@ -113,8 +112,8 @@ public class AdoptionService {
 
     public void preparePdfToSend(Long animalId, AdoptionForm adoptionForm) {
         String documentName = "formularz.pdf";
-        String from = "schronisko.kontakt@gmail.com";   //todo
-        String to = "schronisko.kontakt@gmail.com";     //todo
+        String from = "schronisko.kontakt@gmail.com";
+        String to = "schronisko.kontakt@gmail.com";
         String subject = "Formularz przedadopcyjny";
 
         ByteArrayOutputStream byteArrayOutputStream = null;
@@ -150,25 +149,14 @@ public class AdoptionService {
             mimeMultipart.addBodyPart(emailTextBodyPart);
             mimeMultipart.addBodyPart(pdfBodyPart);
 
-            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
-//            helper.setText(email, true);
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setFrom(from);
             mimeMessage.setContent(mimeMultipart);
-            mailSender.send(mimeMessage);
+            javaMailSender.send(mimeMessage);
 
-//            InternetAddress internetAddressFrom = new InternetAddress(from);
-//            InternetAddress internetAddressTo = new InternetAddress(to);
-//
-//            MimeMessage mimeMessage = mailSender.createMimeMessage();
-//            mimeMessage.setFrom(internetAddressFrom);
-//            mimeMessage.setSubject(subject);
-//            mimeMessage.addRecipient(Message.RecipientType.TO, internetAddressTo);
-//            mimeMessage.setContent(mimeMultipart);
-//
-//            mailSender.send(mimeMessage);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
