@@ -16,7 +16,7 @@ import java.util.function.Function;
 
 @Service
 @Slf4j
-public class JwtUtils {
+public class JWTService {
 
     //https://github.com/koushikkothagal/spring-security-jwt/blob/master/src/main/java/io/javabrains/springsecurityjwt/util/JwtUtil.java
     @Value("${jwt.secret}")
@@ -47,9 +47,9 @@ public class JwtUtils {
         return createToken(claims, user);
     }
 
-    public String generateRefreshToken(User user) {
-        return createToken(new HashMap<>(), user);
-    }
+//    public String generateRefreshToken(User user) {
+//        return createToken(new HashMap<>(), user);
+//    }
 
     private String createToken(Map<String, Object> claims, User user) {
         return Jwts.builder().setClaims(claims)

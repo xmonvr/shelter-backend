@@ -24,7 +24,7 @@ import java.io.IOException;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final UserService userService;
-    private final JwtUtils jwtUtils;
+    private final JWTService jwtService;
     private final TokenRepository tokenRepository;
 
     @Override
@@ -39,12 +39,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         jwtToken = authHeader.substring(7);
-        userEmail = jwtUtils.getUsernameFromToken(jwtToken);
+        userEmail = jwtService.getUsernameFromToken(jwtToken);
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             User user = userService.loadUserByUsername(userEmail);
             boolean isTokenValid = tokenRepository.findByToken(jwtToken).map(token -> !token.isExpired() && !token.isRevoked()).orElse(false);
-            if (jwtUtils.isTokenValid(jwtToken, user) && isTokenValid) {
+            if (jwtService.isTokenValid(jwtToken, user) && isTokenValid) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);

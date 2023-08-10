@@ -8,7 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import pl.shelter.shelterbackend.security.config.JwtUtils;
+import pl.shelter.shelterbackend.security.config.JWTService;
 import pl.shelter.shelterbackend.security.token.TokenRepository;
 import pl.shelter.shelterbackend.user.User;
 import pl.shelter.shelterbackend.user.UserService;
@@ -19,7 +19,7 @@ import pl.shelter.shelterbackend.user.UserService;
 public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
-    private final JwtUtils jwtUtils;
+    private final JWTService jwtService;
     private final TokenRepository tokenRepository;
 
 
@@ -39,7 +39,7 @@ public class AuthenticationService {
         // miejscach w aplikacji.
 
         final User user = userService.loadUserByUsername(request.getEmail());
-        var jwtToken = jwtUtils.generateToken(user);
+        var jwtToken = jwtService.generateToken(user);
 //        var refreshToken = jwtUtils.generateRefreshToken(user);
 
         //uniewazniamy wszystkie stare tokeny
