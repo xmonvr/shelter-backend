@@ -7,10 +7,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.shelter.shelterbackend.security.config.JwtUtils;
+import pl.shelter.shelterbackend.security.config.JWTService;
 import pl.shelter.shelterbackend.security.token.Token;
 import pl.shelter.shelterbackend.security.token.TokenRepository;
-import pl.shelter.shelterbackend.security.token.TokenType;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -24,7 +23,7 @@ public class UserService implements UserDetailsService {
     private final TokenRepository tokenRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RegistrationTokenService registrationTokenService;
-    private final JwtUtils jwtUtils;
+    private final JWTService jwtService;
 //    private final EmailService emailService;
 
     @Override
@@ -56,7 +55,7 @@ public class UserService implements UserDetailsService {
         registrationTokenService.saveRegistrationToken(confirmationToken);
         // todo send email
 
-        String jwtToken = jwtUtils.generateToken(user);
+        String jwtToken = jwtService.generateToken(user);
         saveToken(savedUser, jwtToken);
 
         return registrationToken;
@@ -66,7 +65,6 @@ public class UserService implements UserDetailsService {
         Token token = Token.builder()
                 .user(user)
                 .token(jwtToken)
-                .tokenType(TokenType.BEARER)
                 .revoked(false)
                 .expired(false)
                 .build();

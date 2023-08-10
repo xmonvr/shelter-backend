@@ -30,9 +30,9 @@ public class Token {
     private Integer id;
     @Column(name = "token")
     private String token;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "token_type")
-    private TokenType tokenType;        //todo chyba usunac
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "token_type")
+//    private TokenType tokenType;        //todo chyba usunac
     @Column(name = "expired")
     private boolean expired;
     @Column(name = "revokded")
