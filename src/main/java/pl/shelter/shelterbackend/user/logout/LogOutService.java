@@ -1,4 +1,4 @@
-package pl.shelter.shelterbackend.logout;
+package pl.shelter.shelterbackend.user.logout;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 public class LogOutService implements LogoutHandler {
 
 
-//    private final JwtUtils jwtUtils;
+//    private final JWTService jwtUtils;
 //    private final UserService appUserService;
     private final TokenRepository tokenRepository;
 
@@ -37,7 +37,7 @@ public class LogOutService implements LogoutHandler {
 
         if (tokenFromDb != null) {
             tokenFromDb.setExpired(true);
-            tokenFromDb.setRevoked(true);
+//            tokenFromDb.setRevoked(true);
             tokenRepository.save(tokenFromDb);
         }
     }

@@ -1,4 +1,4 @@
-package pl.shelter.shelterbackend.registration.token;
+package pl.shelter.shelterbackend.user.registration.token;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

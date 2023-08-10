@@ -1,4 +1,4 @@
-package pl.shelter.shelterbackend.authentication;
+package pl.shelter.shelterbackend.user.authentication;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,14 +16,14 @@ import pl.shelter.shelterbackend.user.UserService;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class AuthenticationService {
+public class LoginService {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JWTService jwtService;
     private final TokenRepository tokenRepository;
 
 
-    public ResponseEntity<?> authenticate(AuthenticationRequest request) {
+    public ResponseEntity<?> authenticate(LoginRequest request) {
 
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -50,7 +50,7 @@ public class AuthenticationService {
 
         validUserTokens.forEach(token -> {
             token.setExpired(true);
-            token.setRevoked(true);
+//            token.setRevoked(true);
         });
         tokenRepository.saveAll(validUserTokens);
         userService.saveToken(user, jwtToken);

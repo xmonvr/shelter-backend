@@ -1,4 +1,4 @@
-package pl.shelter.shelterbackend.registration.token;
+package pl.shelter.shelterbackend.user.registration.token;
 
 import pl.shelter.shelterbackend.user.User;
 import lombok.Getter;

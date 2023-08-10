@@ -1,4 +1,4 @@
-package pl.shelter.shelterbackend.registration;
+package pl.shelter.shelterbackend.user.registration;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;

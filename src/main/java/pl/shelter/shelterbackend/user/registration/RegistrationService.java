@@ -1,11 +1,11 @@
-package pl.shelter.shelterbackend.registration;
+package pl.shelter.shelterbackend.user.registration;
 
 import pl.shelter.shelterbackend.email.EmailService;
 import pl.shelter.shelterbackend.user.User;
 import pl.shelter.shelterbackend.user.UserRole;
 import pl.shelter.shelterbackend.user.UserService;
-import pl.shelter.shelterbackend.registration.token.RegistrationToken;
-import pl.shelter.shelterbackend.registration.token.RegistrationTokenService;
+import pl.shelter.shelterbackend.user.registration.token.RegistrationToken;
+import pl.shelter.shelterbackend.user.registration.token.RegistrationTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

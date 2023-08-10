@@ -53,7 +53,7 @@ public class SecurityConfig {
         http.cors().configurationSource(corsConfigurationSource()).and().csrf().disable()       // wyłącza ochronę przed atakiem CSRF (Cross-Site Request Forgery)
                 .authorizeRequests()    // rozpoczyna konfigurację autoryzacji żądań HTTP
                 .antMatchers(
-                        "/registration/register-admin",
+//                        "/registration/register-admin",
                         "/animal/add-animal",
                         "/animal/delete-animal",
                         "/animal/edit-animal",

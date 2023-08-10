@@ -1,8 +1,8 @@
 package pl.shelter.shelterbackend.user;
 
 import lombok.extern.slf4j.Slf4j;
-import pl.shelter.shelterbackend.registration.token.RegistrationToken;
-import pl.shelter.shelterbackend.registration.token.RegistrationTokenService;
+import pl.shelter.shelterbackend.user.registration.token.RegistrationToken;
+import pl.shelter.shelterbackend.user.registration.token.RegistrationTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -39,9 +39,6 @@ public class UserService implements UserDetailsService {
         if (userExists) {
             //TODO if email not confirmed send confirmation email
             throw new IllegalStateException("Email is already taken.");
-//            if (!isUserEnabled) {
-//                emailService.prepareRegistrationMail(user.getEmail(), );
-//            }
         }
 
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
@@ -65,7 +62,7 @@ public class UserService implements UserDetailsService {
         Token token = Token.builder()
                 .user(user)
                 .token(jwtToken)
-                .revoked(false)
+//                .revoked(false)
                 .expired(false)
                 .build();
 

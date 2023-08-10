@@ -1,4 +1,4 @@
-package pl.shelter.shelterbackend.authentication;
+package pl.shelter.shelterbackend.user.authentication;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class AuthenticationRequest {
+public class LoginRequest {
     private String email;
     private String password;
 }

@@ -8,8 +8,6 @@ import pl.shelter.shelterbackend.user.User;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -30,13 +28,8 @@ public class Token {
     private Integer id;
     @Column(name = "token")
     private String token;
-//    @Enumerated(EnumType.STRING)
-//    @Column(name = "token_type")
-//    private TokenType tokenType;        //todo chyba usunac
     @Column(name = "expired")
     private boolean expired;
-    @Column(name = "revokded")
-    private boolean revoked;        //todo chyba do wyrzucenia
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

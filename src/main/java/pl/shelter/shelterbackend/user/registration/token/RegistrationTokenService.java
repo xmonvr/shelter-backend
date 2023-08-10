@@ -1,4 +1,4 @@
-package pl.shelter.shelterbackend.registration.token;
+package pl.shelter.shelterbackend.user.registration.token;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
