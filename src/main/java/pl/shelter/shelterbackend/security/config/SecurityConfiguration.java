@@ -59,7 +59,9 @@ public class SecurityConfiguration {
                         "/animal/edit-animal",
                         "/tab/add-about-entry",
                         "/tab/add-contact-entry",
-                        "/tab/add-volunteering-entry"
+                        "/tab/add-volunteering-entry",
+                        "/adoptions/adoption-form-pdf",
+                        "/adoptions/send-adoption-form"
                 )
                 .hasAuthority("ADMIN")
                 .antMatchers(
