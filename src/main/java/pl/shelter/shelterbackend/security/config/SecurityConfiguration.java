@@ -26,7 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @EnableWebSecurity
 @Configuration
-public class SecurityConfig {
+public class SecurityConfiguration {
 
     private final JwtAuthFilter jwtAuthFilter;
     private final UserService userService;
@@ -72,7 +72,7 @@ public class SecurityConfig {
                         "/animal/animal-by-id",
                         "/animal/filtered-animals",
                         "/images/get-image-by-animalId",
-                        "/auth/login",
+                        "/user/login",
                         "/tab/get-about-entry",
                         "/tab/get-contact-entry",
                         "/tab/get-volunteering-entry",
