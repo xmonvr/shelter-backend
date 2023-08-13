@@ -44,4 +44,5 @@ jar {
 				'Main-Class': 'pl.shelter.shelterbackend.ShelterBackendApplication'
 		)
 	}
+	enabled = false
 }
