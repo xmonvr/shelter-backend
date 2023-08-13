@@ -6,9 +6,9 @@ server:
 
 spring:
   datasource:
-    password: adminadmin
-    url: jdbc:postgresql://localhost:5432/shelter
-    username: admin1
+    password: 1f688e066d3ada74fd3e8e5ec8d04243a1bf9b16418fa1e7467a1da9f5d71dd6
+    url: jdbc:postgresql://ec2-34-242-154-118.eu-west-1.compute.amazonaws.com:5432/d3sgcrcitcvaap
+    username: cijbnvebxzacww
   jpa:
     hibernate:
       ddl-auto: update
