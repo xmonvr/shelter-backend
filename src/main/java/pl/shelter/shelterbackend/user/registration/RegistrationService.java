@@ -41,7 +41,7 @@ public class RegistrationService {
                 request.getPassword(),/* request.getConfirmPassword(),*/ request.getBirthDate(), UserRole.ADMIN);
         String token = userService.signUpUser(newAdmin);
 
-        String activateLink = "http://localhost:8081/registration/confirm?token=" + token;
+        String activateLink = "https://my-app-1-1-5ad057a858a6.herokuapp.com/registration/confirm?token=" + token;
 
         emailService.prepareRegistrationMail(request.getEmail(), prepareEmail(request.getFirstName(), activateLink));
 
