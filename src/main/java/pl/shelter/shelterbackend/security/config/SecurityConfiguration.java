@@ -79,7 +79,8 @@ public class SecurityConfiguration {
                         "/tab/get-contact-entry",
                         "/tab/get-volunteering-entry",
                         "/order/create-order",
-                        "/oauth/create-oauth-token"
+                        "/oauth/create-oauth-token",
+                        "/registration/register-admin"
                         ).permitAll() //// definiuje, które żądania są dostępne bez autoryzacji
                 .anyRequest().authenticated()
                 .and()      /// kończy konfigurację autoryzacji i rozpoczyna konfigurację sesji
