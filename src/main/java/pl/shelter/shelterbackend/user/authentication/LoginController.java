@@ -13,7 +13,7 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-       return loginService.authenticate(request);
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+       return loginService.authenticate(loginRequest);
     }
 }
