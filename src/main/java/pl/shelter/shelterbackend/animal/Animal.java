@@ -25,7 +25,7 @@ public class Animal {
     @Enumerated(EnumType.STRING)        //todo
     private TypeOfAnimal typeOfAnimal;
     @Id     // primary key encji
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="animal_id")
     private Long id;
     @Column(name = "chip_number")

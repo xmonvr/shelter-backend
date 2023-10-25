@@ -12,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
@@ -24,8 +23,7 @@ import java.time.LocalDateTime;
 public class RegistrationToken {
 
     @Id
-    @SequenceGenerator(name = "registration_token_sequence", sequenceName = "registration_token_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "registration_token_sequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "registration_token_id")
     private Long id;
     @Column(nullable = false, name = "token")
@@ -37,7 +35,7 @@ public class RegistrationToken {
     @Column(name = "confirmed_at")
     private LocalDateTime confirmedAt;      // kiedy user potwiedzil email
     @ManyToOne      // user moze miec wiele tokenow
-    @JoinColumn(nullable = false, name = "token_user_id")
+    @JoinColumn(nullable = false, name = "user_id")
     private User user;
 
     public RegistrationToken(String token, LocalDateTime createdAt, LocalDateTime expiresAt, User user) {
