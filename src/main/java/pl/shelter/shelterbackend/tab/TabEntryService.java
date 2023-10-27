@@ -27,25 +27,19 @@ public class TabEntryService {
         tabEntryRepository.save(tabEntry);
     }
 
-    public VolunteeringEntry getNewVolunteeringEntry() {
+    public String getNewVolunteeringEntry() {
         TabEntry tabEntry = tabEntryRepository.findById(1L).orElseThrow();
-        VolunteeringEntry volunteeringEntry = new VolunteeringEntry();
-        volunteeringEntry.setVolunteeringEntry(tabEntry.getVolunteeringTab());
-        return volunteeringEntry;
+        return tabEntry.getVolunteeringTab();
     }
 
-    public AboutUsEntry getNewAboutUsTab() {
+    public String getNewAboutUsTab() {
         TabEntry tabEntry = tabEntryRepository.findById(1L).orElseThrow();
-        AboutUsEntry aboutUsEntry = new AboutUsEntry();
-        aboutUsEntry.setAboutUsEntry(tabEntry.getAboutUsTab());
-        return aboutUsEntry;
+        return tabEntry.getAboutUsTab();
     }
 
-    public ContactEntry getContactEntry() {
+    public String getContactEntry() {
         TabEntry tabEntry = tabEntryRepository.findById(1L).orElseThrow();
-        ContactEntry contactEntry = new ContactEntry();
-        contactEntry.setContactEntry(tabEntry.getContactTab());
-        return contactEntry;
+        return tabEntry.getContactTab();
     }
 //    public void deleteVolunteeringEntry() {
 //        Long tabEntryId = 1L;

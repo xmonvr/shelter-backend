@@ -13,33 +13,32 @@ public class TabEntryController {
     private final TabEntryService tabEntryService;
 
     @PostMapping("/add-volunteering-entry")
-    public void addNewVolunteeringEntry(@RequestBody VolunteeringEntry volunteeringEntry) {
-        tabEntryService.addNewVolunteeringEntry(volunteeringEntry.getVolunteeringEntry());
+    public void addNewVolunteeringEntry(@RequestBody String volunteeringEntry) {
+        tabEntryService.addNewVolunteeringEntry(volunteeringEntry);
     }
 
     @PostMapping("/add-about-entry")
-    public void addNewAboutUsTab(@RequestBody AboutUsEntry aboutUsEntry) {
-        log.info("aboutUsEntry --> " + aboutUsEntry.getAboutUsEntry());
-        tabEntryService.addNewAboutUsTab(aboutUsEntry.getAboutUsEntry());
+    public void addNewAboutUsTab(@RequestBody String aboutUsEntry) {
+        tabEntryService.addNewAboutUsTab(aboutUsEntry);
     }
 
     @PostMapping("/add-contact-entry")
-    public void addContactEntry(@RequestBody ContactEntry contactEntry) {
-        tabEntryService.addContactEntry(contactEntry.getContactEntry());
+    public void addContactEntry(@RequestBody String contactEntry) {
+        tabEntryService.addContactEntry(contactEntry);
     }
 
     @GetMapping("/get-volunteering-entry")
-    public VolunteeringEntry getNewVolunteeringEntry() {
+    public String getNewVolunteeringEntry() {
         return tabEntryService.getNewVolunteeringEntry();
     }
 
     @GetMapping("/get-about-entry")
-    public AboutUsEntry getNewAboutUsTab() {
-       return tabEntryService.getNewAboutUsTab();
+    public String getNewAboutUsTab() {
+        return tabEntryService.getNewAboutUsTab();
     }
 
     @GetMapping("/get-contact-entry")
-    public ContactEntry getContactEntry() {
-       return tabEntryService.getContactEntry();
+    public String getContactEntry() {
+        return tabEntryService.getContactEntry();
     }
 }
