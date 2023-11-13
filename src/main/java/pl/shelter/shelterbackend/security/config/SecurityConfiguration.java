@@ -36,13 +36,11 @@ public class SecurityConfiguration {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(/*"http://localhost:3000"*/"*"));
+        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-        configuration.setAllowedHeaders(List.of("content-type", "Authorization", "Access-Control-Allow-Headers",
-                "Access-Control-Request-Headers", "Access-Control-Request-Method"));
-        //określa, które nagłówki są dozwolone w żądaniach do serwera. Taki nagłówek bedzie mogl byc przekazany w zadaniach
-        configuration.setExposedHeaders(Arrays.asList("Authorization"));
-        // definiuje nagłówki, które będą dostępne w odpowiedziach z serwera.Umożliwiam dostęp do tego nagłówka na froncie w odpowiedziach otrzymanych za pomocą Fetch API.
+        configuration.setAllowedHeaders(List.of("content-type", "Authorization"/*,*/ /*"Access-Control-Allow-Headers",*/
+               /* "Access-Control-Request-Headers", "Access-Control-Request-Method"*/));
+        configuration.setExposedHeaders(List.of("Authorization"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
