@@ -22,7 +22,7 @@ public class LoginService {
     private final JWTService jwtService;
     private final TokenRepository tokenRepository;
 
-    public ResponseEntity<?> authenticate(LoginRequest request) {
+    public ResponseEntity<?> login(LoginRequest request) {
 
         try {
             Authentication authentication = authenticationManager
