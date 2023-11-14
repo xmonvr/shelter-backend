@@ -12,34 +12,35 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 
 @Service
 @Slf4j
 public class JWTService {
 
-    //https://github.com/koushikkothagal/spring-security-jwt/blob/master/src/main/java/io/javabrains/springsecurityjwt/util/JwtUtil.java
     @Value("${jwt.secret}")
     private String SECRET_KEY;
 
+    private Claims extractToken(String token) {
+        return Jwts
+                .parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
     public String getUsernameFromToken(String token) {
-        return extractClaim(token, Claims::getSubject);
+        final Claims claims = extractToken(token);
+        return claims.getSubject();
     }
 
     public Date getExpirationFromToken(String token) {
-        return extractClaim(token, Claims::getExpiration);
-    }
-
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+        final Claims claims = extractToken(token);
+        return claims.getExpiration();
     }
 
     private Boolean isTokenExpired(String token) {
-        return getExpirationFromToken(token).before(new Date());
+        Date now = new Date();
+        return getExpirationFromToken(token).before(now);
     }
 
     public String generateToken(User user) {
@@ -52,7 +53,9 @@ public class JWTService {
 //    }
 
     private String createToken(Map<String, Object> claims, User user) {
-        return Jwts.builder().setClaims(claims)
+        return Jwts
+                .builder()
+                .setClaims(claims)
                 .setSubject(user.getUsername())
                 .claim("authorities", user.getAuthorities())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
