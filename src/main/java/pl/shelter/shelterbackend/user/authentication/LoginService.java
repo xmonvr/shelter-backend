@@ -22,36 +22,36 @@ public class LoginService {
     private final JWTService jwtService;
     private final TokenRepository tokenRepository;
 
-
     public ResponseEntity<?> authenticate(LoginRequest request) {
 
         try {
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    request.getEmail(), request.getPassword()
-            ));
-        } catch (Exception ex) {
-            log.error("Authentication exception occurred: " + ex.getMessage());
-            throw ex;
+            Authentication authentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    ));
+        } catch (Exception exception) {
+            log.error("Authentication exception: " + exception.getMessage());
+            throw exception;
         }
         // Ta linijka ustawia informacje o uwierzytelnieniu użytkownika w bieżącym kontekście SecurityContextHolder.
         // W klasie SecurityContextHolder jest przechowywana informacja o aktualnym użytkowniku i jego uwierzytelnieniu,
         // która jest przenoszona między warstwami aplikacji. Dzięki temu informacje o uwierzytelnieniu są dostępne w różnych
         // miejscach w aplikacji.
 
-        final User user = userService.loadUserByUsername(request.getEmail());
+        /*final*/ User user = userService.loadUserByUsername(request.getEmail());
         var jwtToken = jwtService.generateToken(user);
 //        var refreshToken = jwtUtils.generateRefreshToken(user);
 
-        //uniewazniamy wszystkie stare tokeny
         var validUserTokens = tokenRepository.findAllValidTokenByUserId(user.getId());
-        if (validUserTokens.isEmpty()) {
-            log.error("validUserTokens is empty");
-        }
+//        if (validUserTokens.isEmpty()) {
+//            log.error("ValidUserTokens is empty");
+//        }
 
         validUserTokens.forEach(token -> {
             token.setExpired(true);
-//            token.setRevoked(true);
         });
+
         tokenRepository.saveAll(validUserTokens);
         userService.saveToken(user, jwtToken);
 
