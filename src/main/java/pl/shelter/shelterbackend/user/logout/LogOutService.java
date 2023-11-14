@@ -16,10 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 @Slf4j
 public class LogOutService implements LogoutHandler {
-
-
-//    private final JWTService jwtUtils;
-//    private final UserService appUserService;
     private final TokenRepository tokenRepository;
 
     @Override
@@ -27,7 +23,7 @@ public class LogOutService implements LogoutHandler {
         final String authorizationHeader = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
         final String jwtToken;
 
-        if (!authorizationHeader.startsWith("Bearer") /*|| authorizationHeader == null*/) {
+        if (!authorizationHeader.startsWith("Bearer")) {
             log.error("Authorization header does not start with \"Bearer\"");
             return;
         }
@@ -37,7 +33,6 @@ public class LogOutService implements LogoutHandler {
 
         if (tokenFromDb != null) {
             tokenFromDb.setExpired(true);
-//            tokenFromDb.setRevoked(true);
             tokenRepository.save(tokenFromDb);
         }
     }
