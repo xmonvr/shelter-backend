@@ -22,10 +22,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 import javax.activation.DataSource;
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Map;
 
 @Service
@@ -84,30 +81,20 @@ public class AdoptionService {
 
     //https://api.itextpdf.com/iText5/java/5.5.9/com/itextpdf/text/Document.html
     public Document preparePdfToDownload(Long animalId, AdoptionForm adoptionForm) {
-        Document document = new Document(PageSize.A4, 50, 50, 50, 50);
         String userHome = System.getProperty("user.home");
         String folder = "Downloads";
         String documentName = "formularz";
         String documentFormat = ".pdf";
 
+        FileOutputStream outputStream = null;
+
         try {
-            PdfWriter pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(userHome + "\\" + folder + "\\" + documentName + documentFormat));
-            log.info("path: " + userHome + "\\" + folder + "\\" + documentName + "\\" + documentFormat);
-        } catch (DocumentException | FileNotFoundException e) {
+            outputStream = new FileOutputStream(userHome + "\\" + folder + "\\" + documentName + documentFormat);
+        } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
 
-        document.open();
-        try {
-            BaseFont baseFont = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.CP1250, BaseFont.EMBEDDED);
-            document.add(new Paragraph(convertToString(animalId, adoptionForm), new Font(baseFont)));
-        } catch (DocumentException | IOException e) {
-            throw new RuntimeException(e);
-        }
-        document.addCreationDate();     //metadata
-        document.close();
-
-        return document;
+        return createPdf(animalId, adoptionForm, outputStream);
     }
 
     public void preparePdfToSend(Long animalId, AdoptionForm adoptionForm) {
@@ -116,29 +103,15 @@ public class AdoptionService {
         String to = "schronisko.kontakt@gmail.com";
         String subject = "Formularz przedadopcyjny";
 
-        ByteArrayOutputStream byteArrayOutputStream = null;
+        ByteArrayOutputStream byteArrayOutputStream =  new ByteArrayOutputStream();
+
         try {
-            MimeBodyPart emailTextBodyPart = new MimeBodyPart();
-            emailTextBodyPart.setText("Formularz przedadopcyjny w załączniku.");
-
-            byteArrayOutputStream = new ByteArrayOutputStream();
-
-            Document document = new Document(PageSize.A4, 50, 50, 50, 50);
-
-            PdfWriter.getInstance(document, byteArrayOutputStream);
-
-            document.open();
-            try {
-                BaseFont baseFont = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.CP1250, BaseFont.EMBEDDED);
-                document.add(new Paragraph(convertToString(animalId, adoptionForm), new Font(baseFont)));
-            } catch (DocumentException | IOException e) {
-                throw new RuntimeException(e);
-            }
-            document.addCreationDate();     //metadata
-            document.close();
+            createPdf(animalId, adoptionForm, byteArrayOutputStream);
 
             byte[] bytes = byteArrayOutputStream.toByteArray();
 
+            MimeBodyPart emailTextBodyPart = new MimeBodyPart();
+            emailTextBodyPart.setText("Formularz przedadopcyjny w załączniku.");
             //todo
             DataSource dataSource = new ByteArrayDataSource(bytes, "application/pdf");
             MimeBodyPart pdfBodyPart = new MimeBodyPart();
@@ -160,5 +133,22 @@ public class AdoptionService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Document createPdf(Long animalId, AdoptionForm adoptionForm, OutputStream outputStream) {
+        Document document = new Document(PageSize.A4/*, 50, 50, 50, 50*/);
+
+        try {
+            PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
+            document.open();
+            BaseFont baseFont = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.CP1250, BaseFont.EMBEDDED);
+            document.add(new Paragraph(convertToString(animalId, adoptionForm), new Font(baseFont)));
+        } catch (DocumentException | IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        document.addCreationDate();     //metadata
+        document.close();
+        return document;
     }
 }
