@@ -53,12 +53,12 @@ public class AdoptionService {
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        String personalPartString = "FORMULARZ PRZEDADOPCYJNY\n\nDANE OSOBY STARAJĄCEJ SIĘ O ADOPCJĘ: \nImię: " + adoptionForm.adopter.getFirstName() +
-                "\nNazwisko: " + adoptionForm.adopter.getLastName() + "\nAdres email: " + adoptionForm.adopter.getEmail() +
-                "\nNumer telefonu: " + adoptionForm.adopter.getPhoneNumber() + "\nData urodzenia: " + adoptionForm.adopter.getDateOfBirth().toString() +
-                "\nUlica: " + adoptionForm.adopter.getAddress().getStreet() + "\nNumer domu/mieszkania: " + adoptionForm.adopter.getAddress().getHouseNumber() +
-                "\nMiasto: " + adoptionForm.adopter.getAddress().getCity() + "\nKod pocztowy: " + adoptionForm.adopter.getAddress().getZipCode() +
-                "\nKraj: " + adoptionForm.adopter.getAddress().getCountry() +
+        String personalPartString = "FORMULARZ PRZEDADOPCYJNY\n\nDANE OSOBY STARAJĄCEJ SIĘ O ADOPCJĘ: \nImię: " + adoptionForm.getAdopter().getFirstName() +
+                "\nNazwisko: " + adoptionForm.getAdopter().getLastName() + "\nAdres email: " + adoptionForm.getAdopter().getEmail() +
+                "\nNumer telefonu: " + adoptionForm.getAdopter().getPhoneNumber() + "\nData urodzenia: " + adoptionForm.getAdopter().getDateOfBirth().toString() +
+                "\nUlica: " + adoptionForm.getAdopter().getAddress().getStreet() + "\nNumer domu/mieszkania: " + adoptionForm.getAdopter().getAddress().getHouseNumber() +
+                "\nMiasto: " + adoptionForm.getAdopter().getAddress().getCity() + "\nKod pocztowy: " + adoptionForm.getAdopter().getAddress().getZipCode() +
+                "\nKraj: " + adoptionForm.getAdopter().getAddress().getCountry() +
                 "\n\nDANE ZWIERZĘCIA:\nImię:" + animal.getName() +
                 "\nTyp: " + typeOfAnimal +
                 "\nNumer chip: " + animal.getChip_number() +
@@ -70,7 +70,7 @@ public class AdoptionService {
         stringBuilder.append(personalPartString);
 
         int i = 1;
-        for (Map.Entry<String, String> entry : adoptionForm.questions.entrySet()) {
+        for (Map.Entry<String, String> entry : adoptionForm.getQuestions().entrySet()) {
             String questionsString = i + ". " + entry.getKey() + "\n " + entry.getValue() + "\n\n";
             i++;
             stringBuilder.append(questionsString);
@@ -79,7 +79,6 @@ public class AdoptionService {
         return stringBuilder.toString();
     }
 
-    //https://api.itextpdf.com/iText5/java/5.5.9/com/itextpdf/text/Document.html
     public Document preparePdfToDownload(Long animalId, AdoptionForm adoptionForm) {
         String userHome = System.getProperty("user.home");
         String folder = "Downloads";
@@ -109,19 +108,15 @@ public class AdoptionService {
             createPdf(animalId, adoptionForm, byteArrayOutputStream);
 
             byte[] bytes = byteArrayOutputStream.toByteArray();
-
             MimeBodyPart emailTextBodyPart = new MimeBodyPart();
             emailTextBodyPart.setText("Formularz przedadopcyjny w załączniku.");
-            //todo
             DataSource dataSource = new ByteArrayDataSource(bytes, "application/pdf");
             MimeBodyPart pdfBodyPart = new MimeBodyPart();
             pdfBodyPart.setDataHandler(new DataHandler(dataSource));
             pdfBodyPart.setFileName(documentName);
-
             MimeMultipart mimeMultipart = new MimeMultipart();
             mimeMultipart.addBodyPart(emailTextBodyPart);
             mimeMultipart.addBodyPart(pdfBodyPart);
-
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
             helper.setTo(to);
