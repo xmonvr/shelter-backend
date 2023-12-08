@@ -15,12 +15,12 @@ public class RegistrationTokenService {
         registrationTokenRepository.save(token);
     }
 
-    public RegistrationToken getRegistrationToken(String token) {
+    public RegistrationToken getRegistrationTokenFromDb(String token) {
         return registrationTokenRepository.findByToken(token).orElseThrow(() ->
                 new IllegalStateException("Registration token was not found in the db"));
     }
 
-    public int setConfirmedAt(String token, LocalDateTime time) {
-        return registrationTokenRepository.updateConfirmedAt(token, time);
+    public int updateConfirmationTime(String token, LocalDateTime time) {
+        return registrationTokenRepository.updateConfirmationTime(token, time);
     }
 }

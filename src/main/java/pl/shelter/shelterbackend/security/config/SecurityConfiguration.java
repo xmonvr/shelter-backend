@@ -54,27 +54,26 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers(
+                        "/adoptions/adoption-form-pdf",
+                        "/adoptions/send-adoption-form"
+                )
+                .hasAnyAuthority("USER", "ADMIN")
+                .antMatchers(
 //                        "/registration/register-admin",
                         "/animal/add-animal",
                         "/animal/delete-animal",
                         "/animal/edit-animal",
                         "/tab/add-about-entry",
                         "/tab/add-contact-entry",
-                        "/tab/add-volunteering-entry",
-                        "/adoptions/adoption-form-pdf",
-                        "/adoptions/send-adoption-form"
+                        "/tab/add-volunteering-entry"
                 )
                 .hasAuthority("ADMIN")
-                .antMatchers(
-                        "/adoptions/adoption-form-pdf",
-                        "/adoptions/send-adoption-form"
-                ).hasAuthority("USER")
                 .antMatchers(
                         "/registration",
                         "/registration/confirm",
                         "/animal/animal-by-id",
                         "/animal/filtered-animals",
-                        "/images/get-image-by-animalId",
+                        "/animal/get-image-by-animalId",
                         "/user/login",
                         "/tab/get-about-entry",
                         "/tab/get-contact-entry",

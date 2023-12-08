@@ -22,9 +22,11 @@ public class LogOutService implements LogoutHandler {
     public void logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) {
         final String authorizationHeader = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
         final String jwtToken;
+        log.info("-----------------------------logout triggered");
+        log.info("authorizationHeader --> " + authorizationHeader);
 
         if (!authorizationHeader.startsWith("Bearer")) {
-            log.error("Authorization header does not start with \"Bearer\"");
+            log.error("-----------------------------Authorization header does not start with \"Bearer\"");
             return;
         }
 
@@ -32,6 +34,7 @@ public class LogOutService implements LogoutHandler {
         Token tokenFromDb = tokenRepository.findByToken(jwtToken).orElse(null);
 
         if (tokenFromDb != null) {
+            log.info("-----------------------------logout operation on db triggered");
             tokenFromDb.setExpired(true);
             tokenRepository.save(tokenFromDb);
         }

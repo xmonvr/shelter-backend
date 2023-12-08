@@ -1,6 +1,7 @@
 package pl.shelter.shelterbackend.animal;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import pl.shelter.shelterbackend.animal.image.ImageService;
 
 import java.util.List;
 
@@ -20,6 +22,13 @@ import java.util.List;
 public class AnimalController {
 
     private AnimalService animalService;
+    private final ImageService imageService;
+
+    @GetMapping(value = "/get-image-by-animalId", produces = MediaType.IMAGE_JPEG_VALUE)
+    @Transactional
+    public byte[] getImage(@RequestParam Long animalId) {
+        return imageService.getFileByAnimalId(animalId).getData();
+    }
 
     @PostMapping("/add-animal")
     public Animal createAnimal(@RequestParam TypeOfAnimal typeOfAnimal,
@@ -29,7 +38,7 @@ public class AnimalController {
                                @RequestParam String name,
                                @RequestParam int age,
                                @RequestParam String description,
-                               @RequestParam("image") MultipartFile image) {
+                               @RequestParam MultipartFile image) {
         Animal animal = new Animal(name,typeOfAnimal, chipNumber, gender, isVaccinated, age, description);
         return animalService.createAnimal(animal, image);
     }

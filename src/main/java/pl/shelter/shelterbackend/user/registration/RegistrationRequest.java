@@ -13,11 +13,11 @@ import java.time.LocalDate;
 @ToString
 public class RegistrationRequest {
 
-    private final LocalDate birthDate;
-    private final String firstName;
-    private final String lastName;
-    private final String password;
-    private final String confirmPassword;
-    private final String email;
-    private final boolean policy;
+    private LocalDate birthDate;
+    private String firstName;
+    private String lastName;
+    private String password;
+    private String confirmPassword;
+    private String email;
+    private boolean policy;
 }

@@ -62,7 +62,6 @@ public class AnimalService {
                 throw new RuntimeException(e);
             }
         }
-//        animalRepository.save(animalUpdate);
     }
 
     public void deleteAnimal(Long id) {

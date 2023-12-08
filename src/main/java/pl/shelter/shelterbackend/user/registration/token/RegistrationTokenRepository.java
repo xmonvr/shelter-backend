@@ -16,6 +16,6 @@ public interface RegistrationTokenRepository extends JpaRepository<RegistrationT
 
     @Transactional
     @Modifying
-    @Query("UPDATE RegistrationToken t SET t.confirmedAt = ?2 WHERE t.token = ?1")
-    int updateConfirmedAt(String token, LocalDateTime confirmedAt);
+    @Query("UPDATE RegistrationToken registrationToken SET registrationToken.confirmationTime = ?2 WHERE registrationToken.token = ?1")
+    int updateConfirmationTime(String token, LocalDateTime confirmedAt);
 }

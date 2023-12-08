@@ -28,20 +28,20 @@ public class RegistrationToken {
     private Long id;
     @Column(nullable = false, name = "token")
     private String token;
-    @Column(nullable = false, name = "created_at")
-    private LocalDateTime createdAt;
-    @Column(nullable = false, name = "expires_at")
-    private LocalDateTime expiresAt;
-    @Column(name = "confirmed_at")
-    private LocalDateTime confirmedAt;      // kiedy user potwiedzil email
+    @Column(nullable = false, name = "creation_time")
+    private LocalDateTime creationTime;
+    @Column(nullable = false, name = "expiration_time")
+    private LocalDateTime expirationTime;
+    @Column(name = "confirmation_time")
+    private LocalDateTime confirmationTime;      // kiedy user potwiedzil email
     @ManyToOne      // user moze miec wiele tokenow
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
 
-    public RegistrationToken(String token, LocalDateTime createdAt, LocalDateTime expiresAt, User user) {
+    public RegistrationToken(String token, LocalDateTime creationTime, LocalDateTime expirationTime, User user) {
         this.token = token;
-        this.createdAt = createdAt;
-        this.expiresAt = expiresAt;
+        this.creationTime = creationTime;
+        this.expirationTime = expirationTime;
         this.user = user;
     }
 }
