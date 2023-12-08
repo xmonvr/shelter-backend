@@ -64,7 +64,6 @@ public class UserService implements UserDetailsService {
     public void enableUser(String email) {
         User user = userRepository.findByEmail(email).orElseThrow();
         user.setEnabled(true);
-        log.info("user enabled");
     }
 
 }

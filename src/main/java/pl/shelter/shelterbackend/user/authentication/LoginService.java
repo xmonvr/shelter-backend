@@ -30,9 +30,8 @@ public class LoginService {
                             request.getEmail(),
                             request.getPassword()
                     ));
-        } catch (Exception exception) {
-            log.error("Authentication exception: " + exception.getMessage());
-            throw exception;
+        } catch (Exception e) {
+            throw e;
         }
         // Ta linijka ustawia informacje o uwierzytelnieniu użytkownika w bieżącym kontekście SecurityContextHolder.
         // W klasie SecurityContextHolder jest przechowywana informacja o aktualnym użytkowniku i jego uwierzytelnieniu,

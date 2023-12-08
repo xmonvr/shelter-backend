@@ -23,7 +23,6 @@ public class OAuthService {
     public String preparePayUAuth() {
         String url = "https://secure.snd.payu.com/pl/standard/user/oauth/authorize?grant_type="
                 + GRANT_TYPE + "&client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET;
-        log.info("url --> " + url);
         String response = restTemplate.postForEntity(url, null, String.class).getBody();
         return response;
     }

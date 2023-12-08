@@ -31,11 +31,9 @@ public class OrderService {
         String token = oAuthService.getAccessTokenFromPayUResponse();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        log.info("payu access token --> " + token);
         headers.set("Authorization", "Bearer " + token); // token oAuth
         HttpEntity<OrderCreate> httpEntity = new HttpEntity<>(orderCreate, headers);
         ResponseEntity<String> response = restTemplate.postForEntity("https://secure.snd.payu.com/api/v2_1/orders/", httpEntity, String.class);
-        log.info("createOrder response --> " + response);
 
         OrderResponse orderResponse;
         try {
@@ -47,7 +45,6 @@ public class OrderService {
     }
 
     private OrderCreate prepareOrderCreate(OrderRequest orderRequest, String ipAddress) {
-        log.info("request data --> " + orderRequest.toString());
 
         String customerIp = ipAddress;
         String merchantPosId = POS_ID;
