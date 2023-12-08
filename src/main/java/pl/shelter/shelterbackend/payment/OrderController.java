@@ -16,7 +16,6 @@ public class OrderController {
 
     @PostMapping("/create-order")
     public OrderResponse createOrder(@RequestBody OrderRequest orderRequest, HttpServletRequest httpServletRequest) {
-//        https://mkyong.com/java/how-to-get-client-ip-address-in-java/
         String ipAddress = "";
         if (httpServletRequest != null) {
             ipAddress = httpServletRequest.getHeader("X-FORWARDED-FOR");
@@ -28,24 +27,4 @@ public class OrderController {
         return orderService.createOrder(orderRequest, ipAddress);
     }
 
-//    @GetMapping("/get-ip")
-//    private static String getClientIp(HttpServletRequest request) {
-//
-//    }
-
-//    @GetMapping("/get-ip2")
-//    public String getIpAddress(/*@RequestBody HttpServletRequest httpServletRequest*/) {
-////        String ipAddress = httpServletRequest.getRemoteAddr();
-//        String ipAddress = httpServletRequest.getHeader("X-FORWARDED-FOR");
-//        log.info("adres ip --> " + ipAddress);
-//        return ipAddress;
-//
-//        //dokumentacja https://mkyong.com/java/how-to-get-client-ip-address-in-java/
-//    }
-//
-//    @GetMapping("/getMyIpAddress")
-//    public String getMyIpAddress(HttpServletRequest request) {
-//        String ipAddress = request.getRemoteAddr();
-//        return "Adres IP klienta: " + ipAddress;
-//    }
 }

@@ -26,7 +26,7 @@ public class OrderService {
     private RestTemplate restTemplate = new RestTemplate();
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    public OrderResponse/*ResponseEntity<String>*/ createOrder(OrderRequest orderRequest, String ipAddress) {
+    public OrderResponse createOrder(OrderRequest orderRequest, String ipAddress) {
         OrderCreate orderCreate = prepareOrderCreate(orderRequest, ipAddress);
         String token = oAuthService.getAccessTokenFromPayUResponse();
         HttpHeaders headers = new HttpHeaders();
@@ -37,9 +37,6 @@ public class OrderService {
         ResponseEntity<String> response = restTemplate.postForEntity("https://secure.snd.payu.com/api/v2_1/orders/", httpEntity, String.class);
         log.info("createOrder response --> " + response);
 
-//            return ResponseEntity
-//                    .status(response.getStatusCode())
-//                    .body(response.getBody());
         OrderResponse orderResponse;
         try {
             orderResponse = objectMapper.readValue(response.getBody(), OrderResponse.class);
@@ -51,7 +48,7 @@ public class OrderService {
 
     private OrderCreate prepareOrderCreate(OrderRequest orderRequest, String ipAddress) {
         log.info("request data --> " + orderRequest.toString());
-//        String notifyUrl = null;
+
         String customerIp = ipAddress;
         String merchantPosId = POS_ID;
         String description = orderRequest.getDescription();
@@ -67,7 +64,6 @@ public class OrderService {
         Product product = new Product(name, unitPrice, quantity); // zawsze jeden produkt
 
         return OrderCreate.builder()
-//                .notifyUrl(notifyUrl)
                 .customerIp(customerIp)
                 .merchantPosId(merchantPosId)
                 .description(description)

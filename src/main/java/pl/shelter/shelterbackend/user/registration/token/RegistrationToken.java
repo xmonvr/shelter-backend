@@ -33,7 +33,7 @@ public class RegistrationToken {
     @Column(nullable = false, name = "expiration_time")
     private LocalDateTime expirationTime;
     @Column(name = "confirmation_time")
-    private LocalDateTime confirmationTime;      // kiedy user potwiedzil email
+    private LocalDateTime confirmationTime;
     @ManyToOne      // user moze miec wiele tokenow
     @JoinColumn(nullable = false, name = "user_id")
     private User user;

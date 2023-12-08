@@ -45,7 +45,6 @@ public class User implements UserDetails {
     private String email;
     @Column(name = "password")
     private String password;
-//    private String confirmPassword;
     @Column(name = "birth_date")
     private LocalDate birthDate;
     @Enumerated(EnumType.STRING)
@@ -53,16 +52,15 @@ public class User implements UserDetails {
     private UserRole userRole;
     @Column(name = "enabled")
     private Boolean enabled = false;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(/*mappedBy = "user"*/)   //todo
     private List<Token> tokens;
 
     //konstruktor bez id, bo id bedzie automatycznie generowane
-    public User(String name, String lastName, String email, String password, /*String confirmPassword,*/ LocalDate birthDate, UserRole userRole) {
+    public User(String name, String lastName, String email, String password, LocalDate birthDate, UserRole userRole) {
         this.firstName = name;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-//        this.confirmPassword = confirmPassword;
         this.birthDate = birthDate;
         this.userRole = userRole;
     }

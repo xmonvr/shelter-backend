@@ -38,8 +38,7 @@ public class SecurityConfiguration {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-        configuration.setAllowedHeaders(List.of("content-type", "Authorization"/*,*/ /*"Access-Control-Allow-Headers",*/
-               /* "Access-Control-Request-Headers", "Access-Control-Request-Method"*/));
+        configuration.setAllowedHeaders(List.of("content-type", "Authorization"));
         configuration.setExposedHeaders(List.of("Authorization"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -59,7 +58,6 @@ public class SecurityConfiguration {
                 )
                 .hasAnyAuthority("USER", "ADMIN")
                 .antMatchers(
-//                        "/registration/register-admin",
                         "/animal/add-animal",
                         "/animal/delete-animal",
                         "/animal/edit-animal",
@@ -79,8 +77,6 @@ public class SecurityConfiguration {
                         "/tab/get-contact-entry",
                         "/tab/get-volunteering-entry",
                         "/order/create-order"
-//                        "/oauth/create-oauth-token",        //todo wyrzucic
-//                        "/registration/register-admin"      //todo wyrzucic
                         ).permitAll()
                 .anyRequest().authenticated()
                 .and()

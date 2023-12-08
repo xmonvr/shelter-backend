@@ -29,7 +29,7 @@ public class OAuthService {
     }
 
     public String getAccessTokenFromPayUResponse() {
-        try {   //todo znaleźć dokumentacje do mappera
+        try {
             OAuthResponse oAuthResponse = mapper.readValue(preparePayUAuth(), OAuthResponse.class);
             return oAuthResponse.getAccessToken();
         } catch (JsonProcessingException e) {

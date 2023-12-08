@@ -20,7 +20,9 @@ public class RegistrationTokenService {
                 new IllegalStateException("Registration token was not found in the db"));
     }
 
-    public int updateConfirmationTime(String token, LocalDateTime time) {
-        return registrationTokenRepository.updateConfirmationTime(token, time);
+    public void updateConfirmationTime(String token, LocalDateTime time) {
+        RegistrationToken registrationToken = registrationTokenRepository.findByToken(token).orElseThrow();
+        registrationToken.setConfirmationTime(time);
+        registrationToken.setToken(token);
     }
 }

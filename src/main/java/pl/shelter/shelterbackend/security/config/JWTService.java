@@ -48,10 +48,6 @@ public class JWTService {
         return createToken(claims, user);
     }
 
-//    public String generateRefreshToken(User user) {
-//        return createToken(new HashMap<>(), user);
-//    }
-
     private String createToken(Map<String, Object> claims, User user) {
         return Jwts
                 .builder()
@@ -59,7 +55,7 @@ public class JWTService {
                 .setSubject(user.getUsername())
                 .claim("authorities", user.getAuthorities())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(24)))      //24h
+                .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(24)))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }

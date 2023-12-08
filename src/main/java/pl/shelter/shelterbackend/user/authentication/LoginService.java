@@ -39,14 +39,10 @@ public class LoginService {
         // która jest przenoszona między warstwami aplikacji. Dzięki temu informacje o uwierzytelnieniu są dostępne w różnych
         // miejscach w aplikacji.
 
-        /*final*/ User user = userService.loadUserByUsername(request.getEmail());
+        User user = userService.loadUserByUsername(request.getEmail());
         var jwtToken = jwtService.generateToken(user);
-//        var refreshToken = jwtUtils.generateRefreshToken(user);
 
         var validUserTokens = tokenRepository.findAllValidTokenByUserId(user.getId());
-//        if (validUserTokens.isEmpty()) {
-//            log.error("ValidUserTokens is empty");
-//        }
 
         validUserTokens.forEach(token -> {
             token.setExpired(true);

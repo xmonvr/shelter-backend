@@ -131,7 +131,7 @@ public class AdoptionService {
     }
 
     private Document createPdf(Long animalId, AdoptionForm adoptionForm, OutputStream outputStream) {
-        Document document = new Document(PageSize.A4/*, 50, 50, 50, 50*/);
+        Document document = new Document(PageSize.A4);
 
         try {
             PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);

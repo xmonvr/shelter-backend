@@ -24,20 +24,16 @@ public class UserService implements UserDetailsService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RegistrationTokenService registrationTokenService;
     private final JWTService jwtService;
-//    private final EmailService emailService;
 
     @Override
-    public User loadUserByUsername(String email) /*throws UsernameNotFoundException*/ {
-        return userRepository.findByEmail(email).orElseThrow(() ->
-                new IllegalStateException("Uzytkownik o podanym mailu %s nie istnieje"));
+    public User loadUserByUsername(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new IllegalStateException("Uzytkownik o podanym mailu %s nie istnieje"));
     }
 
     public String signUpUser(User user) {
-        //jesli uzytkownik istnieje
         boolean userExists =  userRepository.findByEmail(user.getEmail()).isPresent();
-//        boolean isUserEnabled = userRepository.findByEmail(user.getEmail()).orElseThrow().getEnabled();
+
         if (userExists) {
-            //TODO if email not confirmed send confirmation email
             throw new IllegalStateException("Email is already taken.");
         }
 
@@ -45,12 +41,9 @@ public class UserService implements UserDetailsService {
         user.setPassword(encodedPassword);
         User savedUser = userRepository.save(user);
 
-        //send confirmation token
         String registrationToken = UUID.randomUUID().toString();
-        RegistrationToken confirmationToken =
-                new RegistrationToken(registrationToken, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), user);
+        RegistrationToken confirmationToken = new RegistrationToken(registrationToken, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), user);
         registrationTokenService.saveRegistrationToken(confirmationToken);
-        // todo send email
 
         String jwtToken = jwtService.generateToken(user);
         saveToken(savedUser, jwtToken);
@@ -62,15 +55,16 @@ public class UserService implements UserDetailsService {
         Token token = Token.builder()
                 .user(user)
                 .token(jwtToken)
-//                .revoked(false)
                 .expired(false)
                 .build();
 
         tokenRepository.save(token);
     }
 
-    public int enableUser(String email) {
-        return userRepository.enableUser(email);
+    public void enableUser(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow();
+        user.setEnabled(true);
+        log.info("user enabled");
     }
 
 }

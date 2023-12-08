@@ -11,18 +11,13 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping
-    public String register(@RequestBody RegistrationRequest registrationRequest) {
-        return registrationService.register(registrationRequest);
+    public void register(@RequestBody RegistrationRequest registrationRequest) {
+        registrationService.register(registrationRequest);
     }
 
-    //todo
-    @GetMapping(/*path = */"/confirm")
-    public String confirmRegistration(@RequestParam/*("token")*/ String token) {
+    @GetMapping("/confirm")
+    public String confirmRegistration(@RequestParam String token) {
         return registrationService.confirmToken(token);
     }
 
-    @PostMapping("/register-admin")
-    public String registerAdmin(@RequestBody RegistrationRequest request) {
-        return registrationService.registerAdmin(request);
-    }
 }

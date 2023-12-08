@@ -20,25 +20,21 @@ public class RegistrationService {
     private final RegistrationTokenService registrationTokenService;
     private final EmailService emailService;
 
-    public String register(RegistrationRequest registrationRequest) {
+    public void register(RegistrationRequest registrationRequest) {
 
-        //token ktory wysylamy
         User newUser = new User(registrationRequest.getFirstName(), registrationRequest.getLastName(), registrationRequest.getEmail(),
-                registrationRequest.getPassword(),/* request.getConfirmPassword(),*/ registrationRequest.getBirthDate(), UserRole.USER);
+                registrationRequest.getPassword(), registrationRequest.getBirthDate(), UserRole.USER);
         String token = userService.signUpUser(newUser);
 
         String activateLink = "http://localhost:8081/registration/confirm?token=" + token;
 
         emailService.prepareRegistrationMail(registrationRequest.getEmail(), prepareEmail(registrationRequest.getFirstName(), activateLink));
-
-        return token;
     }
 
     public String registerAdmin(RegistrationRequest request) {
 
-        //token ktory wysylamy
         User newAdmin = new User(request.getFirstName(), request.getLastName(), request.getEmail(),
-                request.getPassword(),/* request.getConfirmPassword(),*/ request.getBirthDate(), UserRole.ADMIN);
+                request.getPassword(), request.getBirthDate(), UserRole.ADMIN);
         String token = userService.signUpUser(newAdmin);
 
         String activateLink = "http://localhost:8081/registration/confirm?token=" + token;

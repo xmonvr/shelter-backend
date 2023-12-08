@@ -15,7 +15,7 @@ public class EmailService {
 
     private final JavaMailSender javaMailSender;
 
-    @Async      //zeby nie blokowalo klienta
+    @Async
     public void prepareRegistrationMail(String to, String email) {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();

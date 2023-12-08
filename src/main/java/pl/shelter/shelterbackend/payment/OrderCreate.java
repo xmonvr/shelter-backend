@@ -12,7 +12,6 @@ import java.util.List;
 @Setter
 @Builder
 public class OrderCreate {
-//    private String notifyUrl;       //todo niewymagane
     private String customerIp;
     private String merchantPosId;
     private String description;

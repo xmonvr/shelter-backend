@@ -22,7 +22,7 @@ public class Animal {
     @Column(name = "animal_name")
     private String name;
     @Column(name = "type_of_animal")
-    @Enumerated(EnumType.STRING)        //todo
+    @Enumerated(EnumType.STRING)
     private TypeOfAnimal typeOfAnimal;
     @Id     // primary key encji
     @GeneratedValue(strategy = GenerationType.IDENTITY)

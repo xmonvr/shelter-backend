@@ -8,7 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Product {
-    //wszystkie pola wymagane
     private String name;
     private Integer unitPrice;
     private Integer quantity;
