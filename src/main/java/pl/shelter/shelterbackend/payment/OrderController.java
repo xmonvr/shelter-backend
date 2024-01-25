@@ -1,7 +1,6 @@
 package pl.shelter.shelterbackend.payment;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/order")
 @AllArgsConstructor
-@Slf4j
 public class OrderController {
 
     private OrderService orderService;
@@ -23,7 +21,6 @@ public class OrderController {
                 ipAddress = httpServletRequest.getRemoteAddr();
             }
         }
-        log.info("controller OrderRequest --> " + orderRequest);
         return orderService.createOrder(orderRequest, ipAddress);
     }
 

@@ -31,13 +31,9 @@ spring:
           auth: true
           starttls:
             enable: true
-          connectiontimeout: 5000
-          timeout: 3000
-          writetimeout: 5000
 
 jwt:
   secret: 'Ae9yjdqB0rgT'
-  expiration: 300000
 
 payu:
   pos_id: 469153

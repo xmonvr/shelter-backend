@@ -3,7 +3,6 @@ package pl.shelter.shelterbackend.security.config;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pl.shelter.shelterbackend.user.User;
@@ -14,7 +13,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
-@Slf4j
 public class JWTService {
 
     @Value("${jwt.secret}")

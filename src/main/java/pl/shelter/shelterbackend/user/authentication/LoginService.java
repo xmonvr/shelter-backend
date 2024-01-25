@@ -33,10 +33,6 @@ public class LoginService {
         } catch (Exception e) {
             throw e;
         }
-        // Ta linijka ustawia informacje o uwierzytelnieniu użytkownika w bieżącym kontekście SecurityContextHolder.
-        // W klasie SecurityContextHolder jest przechowywana informacja o aktualnym użytkowniku i jego uwierzytelnieniu,
-        // która jest przenoszona między warstwami aplikacji. Dzięki temu informacje o uwierzytelnieniu są dostępne w różnych
-        // miejscach w aplikacji.
 
         User user = userService.loadUserByUsername(request.getEmail());
         var jwtToken = jwtService.generateToken(user);

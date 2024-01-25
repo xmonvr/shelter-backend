@@ -16,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Image {
-    @Id     // primary key encji
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_id")
     private Long id;

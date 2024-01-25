@@ -24,7 +24,7 @@ public class Animal {
     @Column(name = "type_of_animal")
     @Enumerated(EnumType.STRING)
     private TypeOfAnimal typeOfAnimal;
-    @Id     // primary key encji
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="animal_id")
     private Long id;

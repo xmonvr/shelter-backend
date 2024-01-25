@@ -142,7 +142,7 @@ public class AdoptionService {
             throw new RuntimeException(e);
         }
 
-        document.addCreationDate();     //metadata
+        document.addCreationDate();
         document.close();
         return document;
     }

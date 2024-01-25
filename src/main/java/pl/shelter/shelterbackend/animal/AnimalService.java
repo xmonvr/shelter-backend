@@ -30,7 +30,7 @@ public class AnimalService {
 
     public void updateAnimal(Long id, Animal animal, MultipartFile image) {
         Animal animalUpdate = animalRepository.findById(id).orElseThrow();
-        if (animal.getName() != null) {
+        if (!animal.getName().equals("")) {
             animalUpdate.setName(animal.getName());
         }
 
@@ -38,7 +38,7 @@ public class AnimalService {
             animalUpdate.setTypeOfAnimal(animal.getTypeOfAnimal());
         }
 
-        if (animal.getChip_number() != null) {
+        if (!animal.getChip_number().equals("")) {
             animalUpdate.setChip_number(animal.getChip_number());
         }
 
@@ -52,6 +52,10 @@ public class AnimalService {
 
         if (animal.getAge() != null) {
             animalUpdate.setAge(animal.getAge());
+        }
+
+        if (!animal.getDescription().equals("")) {
+            animalUpdate.setDescription(animal.getDescription());
         }
 
         if (image != null) {

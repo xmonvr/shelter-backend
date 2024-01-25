@@ -27,14 +27,14 @@ public class UserService implements UserDetailsService {
 
     @Override
     public User loadUserByUsername(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new IllegalStateException("Uzytkownik o podanym mailu %s nie istnieje"));
+        return userRepository.findByEmail(email).orElseThrow(() -> new IllegalStateException("Uzytkownik o podanym mailu nie istnieje"));
     }
 
     public String signUpUser(User user) {
         boolean userExists =  userRepository.findByEmail(user.getEmail()).isPresent();
 
         if (userExists) {
-            throw new IllegalStateException("Email is already taken.");
+            throw new IllegalStateException("Email jest juz zajety.");
         }
 
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());

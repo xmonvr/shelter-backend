@@ -31,7 +31,7 @@ public class OrderService {
         String token = oAuthService.getAccessTokenFromPayUResponse();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer " + token); // token oAuth
+        headers.set("Authorization", "Bearer " + token);
         HttpEntity<OrderCreate> httpEntity = new HttpEntity<>(orderCreate, headers);
         ResponseEntity<String> response = restTemplate.postForEntity("https://secure.snd.payu.com/api/v2_1/orders/", httpEntity, String.class);
 
@@ -45,7 +45,6 @@ public class OrderService {
     }
 
     private OrderCreate prepareOrderCreate(OrderRequest orderRequest, String ipAddress) {
-
         String customerIp = ipAddress;
         String merchantPosId = POS_ID;
         String description = orderRequest.getDescription();
@@ -58,7 +57,7 @@ public class OrderService {
         String language = "pl";
         String name = orderRequest.getProductName();
         Integer quantity = 1;
-        Product product = new Product(name, unitPrice, quantity); // zawsze jeden produkt
+        Product product = new Product(name, unitPrice, quantity);
 
         return OrderCreate.builder()
                 .customerIp(customerIp)

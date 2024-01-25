@@ -31,19 +31,6 @@ public class RegistrationService {
         emailService.prepareRegistrationMail(registrationRequest.getEmail(), prepareEmail(registrationRequest.getFirstName(), activateLink));
     }
 
-    public String registerAdmin(RegistrationRequest request) {
-
-        User newAdmin = new User(request.getFirstName(), request.getLastName(), request.getEmail(),
-                request.getPassword(), request.getBirthDate(), UserRole.ADMIN);
-        String token = userService.signUpUser(newAdmin);
-
-        String activateLink = "http://localhost:8081/registration/confirm?token=" + token;
-
-        emailService.prepareRegistrationMail(request.getEmail(), prepareEmail(request.getFirstName(), activateLink));
-
-        return token;
-    }
-
     @Transactional
     public String confirmToken(String token) {
         RegistrationToken registrationToken = registrationTokenService.getRegistrationTokenFromDb(token);

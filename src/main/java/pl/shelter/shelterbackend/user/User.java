@@ -4,11 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import pl.shelter.shelterbackend.security.token.Token;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,12 +15,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 @Getter
 @Setter
@@ -30,7 +26,6 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @ToString
-@Slf4j
 public class User implements UserDetails {
 
     @Id
@@ -52,10 +47,7 @@ public class User implements UserDetails {
     private UserRole userRole;
     @Column(name = "enabled")
     private Boolean enabled = false;
-    @OneToMany(/*mappedBy = "user"*/)   //todo
-    private List<Token> tokens;
 
-    //konstruktor bez id, bo id bedzie automatycznie generowane
     public User(String name, String lastName, String email, String password, LocalDate birthDate, UserRole userRole) {
         this.firstName = name;
         this.lastName = lastName;
@@ -68,7 +60,6 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.name());
-        log.info("getAuthorities() --> " + authority);
         return Collections.singletonList(authority);
     }
 

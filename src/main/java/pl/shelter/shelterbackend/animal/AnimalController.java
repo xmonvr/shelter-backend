@@ -49,7 +49,7 @@ public class AnimalController {
     }
 
     @PutMapping("/edit-animal")
-    @Transactional      //w przypadku large object (lob), czyli obraz, musi byc transakcyjnosc
+    @Transactional
     public void updateAnimal(@RequestParam Long id,
                                @RequestParam @Nullable TypeOfAnimal typeOfAnimal,
                                @RequestParam @Nullable String chipNumber,
@@ -64,7 +64,7 @@ public class AnimalController {
     }
 
     @DeleteMapping("/delete-animal")
-    @Transactional      //w przypadku large object (lob), czyli obraz, musi byc transakcyjnosc
+    @Transactional
     public void deleteAnimal(@RequestParam Long id) {
         animalService.deleteAnimal(id);
     }
