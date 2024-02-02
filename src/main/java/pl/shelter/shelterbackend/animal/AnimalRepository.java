@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface AnimalRepository extends JpaRepository<Animal, Long> {
+
     Optional<Animal> findById(Long id);
     void deleteById(Long id);
     @Query("SELECT animal FROM Animal animal WHERE" +

@@ -12,7 +12,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class TabEntry {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tab_entry_id")

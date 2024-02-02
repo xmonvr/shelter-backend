@@ -10,7 +10,6 @@ import java.util.Map;
 @ToString
 @Getter
 public class AdoptionForm {
-
     private Adopter adopter;
     private Map<String, String> questions;
 }

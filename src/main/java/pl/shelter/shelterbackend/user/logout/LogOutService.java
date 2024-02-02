@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 @Slf4j
 public class LogOutService implements LogoutHandler {
+
     private final TokenRepository tokenRepository;
 
     @Override
